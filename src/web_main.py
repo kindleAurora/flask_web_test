@@ -51,7 +51,7 @@ def faceinput():
 def video_capture():
     global camera
     camera = cv2.VideoCapture(0)
-    capture_by_frames()
+    #capture_by_frames()
     return 'nihao,摄像头'
 
 # 摄像头检测
@@ -313,6 +313,7 @@ def randomm():
 
 def run():
     app.run(host='0.0.0.0', port="5000", threaded=True, debug=True)
+
     
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port="8080")

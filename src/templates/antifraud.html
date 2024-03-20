@@ -82,6 +82,8 @@
             cursor: pointer;
             
         }
+        
+   
     </style>
 </head>
 
@@ -187,9 +189,10 @@
                                     <div class="title"><img src="../static/assets/images/title_3.png" alt="">视频</div>
                                     <div id="video">
                                         <!-- TODO -->
-                                        <img id="streaming" src="../static/assets/images/about/small1.jpg" alt="">
+                                        <!-- <img id="streaming" src="../static/assets/images/about/small1.jpg" alt=""> -->
 
-                                        <video id="player"></video>
+                                        <video id="player" autoplay playsinline controls></video>
+
 
                                     </div>
                                 </div>
@@ -485,18 +488,30 @@
         })
         // 传递视频流
         const player = document.querySelector('#player');
-        btn1.addEventListener('click',function(){
+        
+
+        btn1.addEventListener('click', function() {
             record();
-        })
-        async function record(){
-            const stream = await navigator.mediaDevices['getUserMedia']({
-                video: {
-                    width: 500,
-                    height: 300,
-                    frameRate: 20
+        });
+        let blobs = [], mediaRecorder;
+        async function record() {
+            try {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    console.log('ok')
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            width: 500,
+                            height: 300,
+                            frameRate: 20
+                        }
+                    });
+                    player.srcObject = stream;
+                } else {
+                    console.error('getUserMedia is not supported');
                 }
-            });
-            player.srcObject = stream;
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+            }
         }
 
 
@@ -527,7 +542,7 @@
 
     <!-- socket传递信息 -->
     <script>
-        var socket = io();
+        const socket = io.connect('http://114.55.234.236:8080');
 
         socket.on('connect', function() {
             console.log('Connected');
@@ -547,6 +562,8 @@
             document.getElementById('streaming').src = data.url;
 
         });
+
+        
     </script>
 
 
