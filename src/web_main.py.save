@@ -293,8 +293,8 @@ def game():
     return render_template('ytgame.html')
 
 # 定义照片文件夹路径
-photo_folder = '9'
-#photos = [os.path.join(photo_folder,file)for file in os.listdir(photo_folder)if file.endswith(('.jpg','.png','.jpeg'))]
+photo_folder = '../9'
+photos = [os.path.join(photo_folder,file)for file in os.listdir(photo_folder)if file.endswith(('.jpg','.png','.jpeg'))]
  
 # 随机发送图片
 @app.route('/randomm')
@@ -311,8 +311,6 @@ def randomm():
     socketio.emit('photo_data',{'picture':img_url,'class':imge_class})
     return "Random picture sent to the web"
 
-def run():
-    app.run(host='0.0.0.0', port="5000", threaded=True, debug=True)
-    
+
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0',port="8080")
+    app.run(debug=True,host='0.0.0.0',port=80)
