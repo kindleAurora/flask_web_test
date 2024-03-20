@@ -20,7 +20,7 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config['SECRET_KEY'] = 'byd flask sm dou buhui'
 
 # 使用socket来进行通信交互
-socketio = SocketIO(app)
+socketio = SocketIO(app,async_mode='threading')
       
 # 转到不同页面
 @app.route('/')

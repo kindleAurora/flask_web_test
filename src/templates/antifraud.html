@@ -189,6 +189,8 @@
                                         <!-- TODO -->
                                         <img id="streaming" src="../static/assets/images/about/small1.jpg" alt="">
 
+                                        <video id="player"></video>
+
                                     </div>
                                 </div>
                             </div>
@@ -481,8 +483,21 @@
                 };
                 fileInput.click(); // 触发文件选择对话框
         })
-
-
+        // 传递视频流
+        const player = document.querySelector('#player');
+        btn1.addEventListener('click',function(){
+            record();
+        })
+        async function record(){
+            const stream = await navigator.mediaDevices['getUserMedia']({
+                video: {
+                    width: 500,
+                    height: 300,
+                    frameRate: 20
+                }
+            });
+            player.srcObject = stream;
+        }
 
 
 
