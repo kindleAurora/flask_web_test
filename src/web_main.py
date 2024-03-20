@@ -294,7 +294,7 @@ def game():
 
 # 定义照片文件夹路径
 photo_folder = '9'
-photos = [os.path.join(photo_folder,file)for file in os.listdir(photo_folder)if file.endswith(('.jpg','.png','.jpeg'))]
+#photos = [os.path.join(photo_folder,file)for file in os.listdir(photo_folder)if file.endswith(('.jpg','.png','.jpeg'))]
  
 # 随机发送图片
 @app.route('/randomm')
