@@ -22,23 +22,21 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config['SECRET_KEY'] = 'byd flask sm dou buhui'
 
 # 使用socket来进行通信交互
-socketio = SocketIO(app,async_mode='threading')
+socketio = SocketIO(app)
 
 @socketio.on('connect')
 def handle_connect():
-    print('Client connected')
+    print('客户端已连接')
+
+@socketio.on('message')
+def handle_message(message):
+    print('收到消息:', message)
+    # 在这里处理接收到的消息，并可以向客户端发送消息
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    print('Client disconnected')
-    
-@socketio.on('message')
-    
-def handle_message(blob):
-    # 在这里处理接收到的图像数据
-    # 这里的示例是将接收到的二进制数据保存到文件
-    print('Image received')
-    # 这里的代码将 blob 写入文件，这里需要根据你的需求来处理数据
+    print('客户端已断开连接')
+
     
 # 转到不同页面
 @app.route('/')
@@ -64,6 +62,7 @@ def facegame():
 @app.route('/faceinput')
 def faceinput():
     return render_template('faceinput.html')
+
 # 使用摄像头
 @app.route('/video_capture',methods=['GET','POST'])
 def video_capture():
