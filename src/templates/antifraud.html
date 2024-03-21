@@ -557,6 +557,35 @@
     </script>
 
     <!-- socket传递信息 -->
+
+
+
+    <script>
+        // 创建 WebSocket 连接
+        var socket = new WebSocket("ws://localhost:8080");
+
+        // 连接打开时的回调函数
+        socket.onopen = function(event) {
+            console.log("WebSocket 连接已打开");
+            // 在连接打开时发送消息
+            socket.send("Hello, WebSocket Server!");
+        };
+
+        // 接收消息时的回调函数
+        socket.onmessage = function(event) {
+            console.log("收到服务器消息: " + event.data);
+        };
+
+        // 连接关闭时的回调函数
+        socket.onclose = function(event) {
+            console.log("WebSocket 连接已关闭");
+        };
+
+        // 发生错误时的回调函数
+        socket.onerror = function(error) {
+            console.error("WebSocket 发生错误: ", error);
+        };
+    </script>
     <!-- <script>
         const socket = io.connect('http://114.55.234.236:8080/antifraud');
 
