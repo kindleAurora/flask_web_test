@@ -13,6 +13,8 @@ from main.anti_spoof_predict import AntiSpoofPredict
 from main.generate_patches import CropImage
 from main.utility import parse_model_name
 from flask_socketio import SocketIO
+import io
+from PIL import Image
 warnings.filterwarnings('ignore')
 
 # 定义flask应用app入口
@@ -21,7 +23,23 @@ app.config['SECRET_KEY'] = 'byd flask sm dou buhui'
 
 # 使用socket来进行通信交互
 socketio = SocketIO(app,async_mode='threading')
-      
+
+@socketio.on('connect')
+def handle_connect():
+    print('Client connected')
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected')
+    
+@socketio.on('message')
+    
+def handle_message(blob):
+    # 在这里处理接收到的图像数据
+    # 这里的示例是将接收到的二进制数据保存到文件
+    print('Image received')
+    # 这里的代码将 blob 写入文件，这里需要根据你的需求来处理数据
+    
 # 转到不同页面
 @app.route('/')
 def index():
@@ -47,75 +65,84 @@ def facegame():
 def faceinput():
     return render_template('faceinput.html')
 # 使用摄像头
-@app.route('/video_capture')
+@app.route('/video_capture',methods=['GET','POST'])
 def video_capture():
-    global camera
-    camera = cv2.VideoCapture(0)
-    #capture_by_frames()
+    print('ahjsdhjhjashjhdhsahjhjahshdjklfalhjshhjhjk')
+    # 接收图像数据
+    image_file = request.files['image']
+    image_blob = image_file.read()
+    # 将图像数据转换为图像对象
+    image = Image.open(io.BytesIO(image_blob))
+    capture_by_frames(image_data=image)
     return 'nihao,摄像头'
 
 # 摄像头检测
-def capture_by_frames(model_dir="./resources/anti_spoof_models"):
+def capture_by_frames(image_data,model_dir="./resources/anti_spoof_models"):
     model_test = AntiSpoofPredict(0)
     video_cropper = CropImage()
+    # 将接收到的图像数据解码为图像数组
+    nparr = np.frombuffer(base64.b64decode(image_data), np.uint8)
+    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    frame_count = 0  # 重置帧数计数器
+    frame_bbox = model_test.get_bbox(frame)
+    prediction = np.zeros((1, 3))
+    for model_name in os.listdir(model_dir):
+        h_input, w_input, model_type, scale = parse_model_name(model_name)
+        param = {
+            "org_img": frame,
+            "bbox": frame_bbox,
+            "scale": scale,
+            "out_w": w_input,
+            "out_h": h_input,
+            "crop": True,
+        }
+        if scale is None:
+            param["crop"] = False
+        img = video_cropper.crop(**param)
+        prediction += model_test.predict(
+            img, os.path.join(model_dir, model_name))
+    label = np.argmax(prediction)
+    value = prediction[0][label] / 2
+    if label == 1:
+        result_text = "RealFace Score: {:.2f}".format(value)
+        color = (255, 0, 0)
+        label1 = 'ture face'
+    else:
+        result_text = "FakeFace Score: {:.2f}".format(value)
+        color = (0, 0, 255)
+        label1 = 'false face'
+    cv2.rectangle(
+        frame, (frame_bbox[0], frame_bbox[1]),
+        (frame_bbox[0] + frame_bbox[2], frame_bbox[1] + frame_bbox[3]),
+        color, 2)
+    cv2.putText(frame, result_text, (frame_bbox[0], frame_bbox[1] - 5),
+                cv2.FONT_HERSHEY_COMPLEX, 0.5 * h_input / 1024, color)
+
+    # 计算帧率
+    cv2.putText(frame, "FPS: N/A", (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+    _, buffer = cv2.imencode('.jpg', frame)
+    img_base64 = base64.b64encode(buffer).decode()  # 将字节对象转换为字符串
+    img_url = 'data:image/jpeg;base64,' + img_base64
+    # 使用 socket 返回结果给前端
+    socketio.emit('detection_result', {'confidence': value, 'classification': label1, 'url': img_url})
+
+
     
-    width = int(camera.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    while True:
-        start_time = time.time()  # 记录开始时间
-        frame_count = 0  # 重置帧数计数器
-        success, frame = camera.read()  # read the camera frame
-        if not success:
-            print('sorry,not success')
-            break
-        frame_bbox = model_test.get_bbox(frame)
-        prediction = np.zeros((1, 3))
-        for model_name in os.listdir(model_dir):
-            h_input, w_input, model_type, scale = parse_model_name(model_name)
-            param = {
-                "org_img": frame,
-                "bbox": frame_bbox,
-                "scale": scale,
-                "out_w": w_input,
-                "out_h": h_input,
-                "crop": True,
-            }
-            if scale is None:
-                param["crop"] = False
-            img = video_cropper.crop(**param)
-            prediction += model_test.predict(
-                img, os.path.join(model_dir, model_name))
-        label = np.argmax(prediction)
-        value = prediction[0][label] / 2
-        if label == 1:
-            result_text = "RealFace Score: {:.2f}".format(value)
-            color = (255, 0, 0)
-            label1 = 'ture face'
-        else:
-            result_text = "FakeFace Score: {:.2f}".format(value)
-            color = (0, 0, 255)
-            label1 = 'false face'
-        cv2.rectangle(
-            frame, (frame_bbox[0], frame_bbox[1]),
-            (frame_bbox[0] + frame_bbox[2], frame_bbox[1] + frame_bbox[3]),
-            color, 2)
-        cv2.putText(frame, result_text, (frame_bbox[0], frame_bbox[1] - 5),
-                    cv2.FONT_HERSHEY_COMPLEX, 0.5 * height / 1024, color)
-
-        # 计算帧率
-        elapsed_time = time.time() - start_time  # 计算时间间隔
-        frame_count += 1  # 帧数加1
-        fps = frame_count / elapsed_time  # 计算帧率
-        cv2.putText(frame, "FPS: {:.2f}".format(fps), (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-
-        _, buffer = cv2.imencode('.jpg', frame)
-        img_base64 = base64.b64encode(buffer).decode()  # 将字节对象转换为字符串
-        img_url = 'data:image/jpeg;base64,' + img_base64
-        
-        # 使用 socket 返回结果给前端
-        socketio.emit('detection_result', {'confidence': value, 'classification': label1, 'url': img_url})
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 # 停止摄像头
 @app.route('/stop_camera',methods=['GET','POST'])

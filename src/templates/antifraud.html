@@ -186,12 +186,12 @@
                         <div class="following">
                             <div class="follow_left">
                                 <div class="outkuang">
-                                    <div class="title"><img src="../static/assets/images/title_3.png" alt="">视频</div>
+                                    <div class="title"><img src="../static/assets/images/title_3.png" alt="">视频11</div>
                                     <div id="video">
                                         <!-- TODO -->
-                                        <!-- <img id="streaming" src="../static/assets/images/about/small1.jpg" alt=""> -->
+                                        <img id="streaming" src="../static/assets/images/about/small1.jpg" alt="">
 
-                                        <video id="player" autoplay playsinline controls></video>
+                                        <!-- <video id="player" autoplay playsinline controls></video> -->
 
 
                                     </div>
@@ -390,15 +390,15 @@
         let isStreaming = false;
         let videostreaming =false;
         // btn1的后端启动
-        btn1.addEventListener('click',function(){
-            if(!isStreaming){
-                fetch('/video_capture')
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-                isStreaming = true;
-            }
-        })
+        // btn1.addEventListener('click',function(){
+        //     if(!isStreaming){
+        //         fetch('/video_capture')
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        //         isStreaming = true;
+        //     }
+        // })
         //stop后端启动
         stop1.addEventListener('click',function(){
             
@@ -486,34 +486,50 @@
                 };
                 fileInput.click(); // 触发文件选择对话框
         })
+
+
+
+
         // 传递视频流
         const player = document.querySelector('#player');
         
-
+        // 点击开始摄像头，启动摄像头传送画面
         btn1.addEventListener('click', function() {
-            record();
+            startStream();
         });
         let blobs = [], mediaRecorder;
-        async function record() {
+        async function startScreen() {
             try {
-                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                    console.log('ok')
-                    const stream = await navigator.mediaDevices.getUserMedia({
-                        video: {
-                            width: 500,
-                            height: 300,
-                            frameRate: 20
-                        }
-                    });
-                    player.srcObject = stream;
-                } else {
-                    console.error('getUserMedia is not supported');
-                }
-            } catch (error) {
-                console.error('Error accessing camera:', error);
-            }
-        }
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video:{
+                        width:500,
+                        height:300,
+                        frameRate:20
+                    }
+                });
+                // 获取视频
+                const videoTrack = stream.getVideoTracks()[0];
+                // 获取图片（一帧）
+                const imageCapture = new ImageCapture(videoTrack);
+                
+                // 定时发送
+                setInterval(async()=>{
+                    try{
+                        const bitmap = await imageCapture.grabFrame();
+                        // 转换为Blob对象
+                        const blob = await createBlobFromImageBitmap(bitmap);
+                        // 将 Blob 对象发送到后端进行处理
+                        // 将 Blob 对象发送到后端进行处理
+                        socket.send(blob);
 
+                    }catch (error) {
+                console.error('Error grabbing frame:', error);
+                    }
+            },1000/20);//设置帧率
+        }catch (error) {
+            console.error('Error accessing camera:', error);
+        }
+    } 
 
 
 
@@ -542,7 +558,7 @@
 
     <!-- socket传递信息 -->
     <script>
-        const socket = io.connect('http://114.55.234.236:8080');
+        const socket = io.connect('http://114.55.234.236:8080/antifraud');
 
         socket.on('connect', function() {
             console.log('Connected');
@@ -563,7 +579,7 @@
 
         });
 
-        
+
     </script>
 
 
