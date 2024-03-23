@@ -57,8 +57,8 @@ def videoFrame(data):
     # 使用 socket 返回结果给前端
     value =1
     label1 =1
-    
-    socketio.emit('detection_result', {'confidence': value, 'classification': label1, 'url': data})
+    print('ok')
+    # socketio.emit('detection_result', {'confidence': value, 'classification': label1, 'url': data})
 
 
 
