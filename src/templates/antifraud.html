@@ -19,6 +19,7 @@
     <!-- 服务端使用socket的协议 你好-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
 
+
     <style>
         .following {
             display: flex;
@@ -191,7 +192,7 @@
                                         <!-- TODO -->
                                         <img id="streaming" src="../static/assets/images/about/small1.jpg" alt="">
 
-                                        <!-- <video id="player" autoplay playsinline controls></video> -->
+                                        
 
 
                                     </div>
@@ -202,6 +203,7 @@
                                     <div class="title2"><img src="../static/assets/images/title_3.png" alt="">结果分析</div>
                                     <div id="confidence"></div>
                                     <div id="classification"></div>
+                                    <video id="player" autoplay playsinline controls></video>
                                 </div>
                             </div>
                         </div>
@@ -490,49 +492,81 @@
 
 
 
-        // 传递视频流
-        const player = document.querySelector('#player');
+    // 传递视频流
+    //const player = document.querySelector('#player');
         
-        // 点击开始摄像头，启动摄像头传送画面
-        btn1.addEventListener('click', function() {
-            startStream();
-        });
-        let blobs = [], mediaRecorder;
-        async function startScreen() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video:{
-                        width:500,
-                        height:300,
-                        frameRate:20
-                    }
-                });
-                // 获取视频
-                const videoTrack = stream.getVideoTracks()[0];
-                // 获取图片（一帧）
-                const imageCapture = new ImageCapture(videoTrack);
+    // 点击开始摄像头，启动摄像头传送画面
+    //     btn1.addEventListener('click', function() {
+    //         startStream();
+    //     });
+    //     let blobs = [], mediaRecorder;
+    //     async function startScreen() {
+    //         try {
+    //             const stream = await navigator.mediaDevices.getUserMedia({
+    //                 video:{
+    //                     width:500,
+    //                     height:300,
+    //                     frameRate:20
+    //                 }
+    //             });
+    //             // 获取视频
+    //             const videoTrack = stream.getVideoTracks()[0];
+    //             // 获取图片（一帧）
+    //             const imageCapture = new ImageCapture(videoTrack);
                 
-                // 定时发送
-                setInterval(async()=>{
-                    try{
-                        const bitmap = await imageCapture.grabFrame();
-                        // 转换为Blob对象
-                        const blob = await createBlobFromImageBitmap(bitmap);
-                        // 将 Blob 对象发送到后端进行处理
-                        // 将 Blob 对象发送到后端进行处理
-                        socket.send(blob);
+    //             // 定时发送
+    //             setInterval(async()=>{
+    //                 try{
+    //                     const bitmap = await imageCapture.grabFrame();
+    //                     // 转换为Blob对象
+    //                     const blob = await createBlobFromImageBitmap(bitmap);
+                        
+    //                     // 将 Blob 对象发送到后端进行处理
+    //                     socket.send('video_frame',blob);
 
-                    }catch (error) {
-                console.error('Error grabbing frame:', error);
-                    }
-            },1000/20);//设置帧率
-        }catch (error) {
-            console.error('Error accessing camera:', error);
-        }
-    } 
+    //                 }catch (error) {
+    //             console.error('Error grabbing frame:', error);
+    //                 }
+    //         },1000/20);//设置帧率
+    //     }catch (error) {
+    //         console.error('Error accessing camera:', error);
+    //     }
+    // } 
 
+    // try
+    // 发送信息
+    // btn1.addEventListener('click',function(){
+    //     socket.emit('message_from_server', '开始摄像头')
+    // })
+    
+    // 传递摄像头画面
+    btn1.addEventListener('click',function(){
+        startScreen();
+    })
+    async function startScreen(){
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video:{
+                width:500,
+                height:300,
+                frameRate:20
+            }
+        }).then(stream =>{
+            const videoElement = document.getElementById('player');
+            videoElement.srcObject = stream;
+            // create canvas
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            setInterval(() =>{
+                context.drawImage(videoElement,0,0,canvas.width,canvas.height);
+                socket.emit('videoFrame',canvas.toDataURL('image/jpeg'));
+            },1000/20);
 
-
+        })
+        .catch(error =>{
+            console.log('Error accessing the camera:', error);
+        })
+    }
+    
 
 
 
@@ -587,7 +621,7 @@
         };
     </script> -->
     <script>
-        const socket = io.connect('http://114.55.234.236:8080/antifraud');
+        const socket = io();
 
         socket.on('connect', function() {
             console.log('已连接');

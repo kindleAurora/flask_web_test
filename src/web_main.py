@@ -15,6 +15,7 @@ from main.utility import parse_model_name
 from flask_socketio import SocketIO
 import io
 from PIL import Image
+from engineio.payload import Payload
 warnings.filterwarnings('ignore')
 
 # 定义flask应用app入口
@@ -22,7 +23,9 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config['SECRET_KEY'] = 'byd flask sm dou buhui'
 
 # 使用socket来进行通信交互
-socketio = SocketIO(app)
+Payload.max_decode_packets = 50000
+socketio = SocketIO(cors_allowed_origins='*')
+socketio.init_app(app)
 
 @socketio.on('connect')
 def handle_connect():
@@ -36,6 +39,28 @@ def handle_message(message):
 @socketio.on('disconnect')
 def handle_disconnect():
     print('客户端已断开连接')
+
+# @socketio.on('video_frame')
+# def handle_video_frame(blob):
+#     # 在这里处理接收到的视频帧数据，您可以将其保存到文件、进行处理等操作
+#     print('reveiced video')
+#     pass
+
+# 定义事件处理函数
+@socketio.on('message_from_server')
+def handle_message(data):
+    print('Received message from client:', data)
+
+
+@socketio.on('videoFrame')
+def videoFrame(data):
+    # 使用 socket 返回结果给前端
+    value =1
+    label1 =1
+    
+    socketio.emit('detection_result', {'confidence': value, 'classification': label1, 'url': data})
+
+
 
     
 # 转到不同页面
@@ -342,4 +367,5 @@ def run():
 
     
 if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0',port="8080")
+    # app.run(debug=True,host='0.0.0.0',port="8080")
+    socketio.run(app)
