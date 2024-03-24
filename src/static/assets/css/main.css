@@ -2934,6 +2934,18 @@ ol {
   border-radius: 6px;
 }
 
+.xiugaicss {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  padding: 50px 30px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  z-index: 9999;
+  height: 600px;
+}
+
 .blog-single .post-thumbnils {
   position: relative;
   border-radius: 5px;
