@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 所有的css写在了game.css里面 -->
+    <link rel="stylesheet" href="../static/assets/css/game.css">
+    <!-- 服务端使用socket的协议 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+</head>
+<body>
+    <div class="score_result" id="score">分数：0</div>
+    <div class="start">
+        <div id="use" style="width: 70%; text-align: center; height: 100px; background: rgb(198, 234, 211);line-height: 120px; color: #44a8f2; font-size: 30px; border-radius: 20px ;
+        display: block; margin-left: auto; margin-right: auto;">开始游戏</div>
+    </div>
+    <div class="random_picture">
+        <img class="picture" id="rrandom" src="../static/assets/images/loading.svg" alt="">
+        
+    </div>
+    <div class="following">
+        <button class="right" id="tt" onclick="chooseOption('1')">
+            真人
+        </button>
+        <button class="left" id="ff" onclick="chooseOption('0')">
+            假人
+        </button>
+    </div>
+    <!-- 倒计时 -->
+    <div class="daojishi" id="countdown">倒计时：30s</div>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 倒计时模块 -->
+    <script>
+        var countdownElement = document.getElementById('countdown');
+        
+        let timeLeft = 30;
+        // 更新倒计时显示并减少时间
+        function updateCountdown() {
+            
+            countdownElement.textContent = '倒计时：' + timeLeft + 's'; // 更新完整的倒计时文本
+            
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+                // 每秒更新一次
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+
+    </script>
+
+    <!-- 开始游戏 -->
+    <script>
+        // 开始按钮
+        const start1 = document.querySelector('#use')
+        //真人按钮
+        const true1 = document.querySelector('#tt')
+        // 假人按钮
+        const false1 = document.querySelector('#ff')
+        // 获取分数元素
+        var scoreElement = document.getElementById('score');
+        // 定义一个变量来存储分数
+        var score = 0;
+        // 点击开始，开始倒计时。
+        start1.addEventListener('click',function(){
+            // 初始调用更新倒计时
+            timeLeft = 30;
+            updateCountdown();
+            fetch('/randomm')
+            .catch(error => {
+                    console.error('Error:', error);
+                });
+            score = 0;
+            scoreElement.textContent = '分数：' + score;
+            
+        })
+        //换图片
+        true1.addEventListener('click',function(){
+            fetch('/randomm')
+            .catch(error => {
+                    console.error('Error:', error);
+                });
+        })
+         //换图片
+         false1.addEventListener('click',function(){
+            fetch('/randomm')
+            .catch(error => {
+                    console.error('Error:', error);
+                });
+        })
+        
+         // 玩家选择选项
+         function chooseOption(option) {
+            const selectedClass = document.getElementById('rrandom').dataset.class;
+            const resultElement = document.getElementById('score_result');
+            if (selectedClass === option && timeLeft>0) {
+                console.log(timeLeft)
+                score += 10; // 假设每次答对增加10分
+                
+                // 更新分数元素的显示
+                scoreElement.textContent = '分数：' + score;
+            } 
+            if(selectedClass != option && timeLeft>0) {
+                console.log(timeLeft)
+                
+                scoreElement.textContent = '分数：' + score+'答错了，分数不变';
+            }
+        }
+
+
+
+    </script>
+
+
+
+
+
+    <!-- socket的客户端启动 -->
+    <script>
+        var socket = io();
+
+        socket.on('connect', function() {
+            console.log('Connected');
+        });
+
+        socket.on('disconnect', function() {
+            console.log('Disconnected');
+        });
+
+        socket.on('photo_data', function(data) {
+            console.log('Detection Result:', data);
+                
+             // 设置图像元素的src属性为data.picture
+            document.getElementById('rrandom').src = data.picture;
+            // 更新图片的类别
+            document.getElementById('rrandom').dataset.class = data.class
+
+        });
+    </script>
+
+
+</body>
+</html>
