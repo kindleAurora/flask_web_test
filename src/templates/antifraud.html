@@ -19,7 +19,6 @@
     <!-- 服务端使用socket的协议 你好-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
 
-
     <style>
         .following {
             display: flex;
@@ -68,21 +67,7 @@
             
             
         }
-        .zanting {
-            width: 50px;
-            height: 50px;
-            background-color: #e60909;
-            border-radius: 50%; /* 使按钮变成圆形 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            
-            left: 50%;
-            transform: translate(-50%, -200%);
-            cursor: pointer;
-            
-        }
+  
         #player{
             display : none;
             
@@ -152,7 +137,6 @@
         </div>
     </div>
 
-
     <div class="modal fade form-modal" id="signup" tabindex="-1" aria-hidden="true"><!--摄像头，图片，视频-->
     <div class="modal-dialog max-width-px-840 position-relative">
         <button type="button"
@@ -208,7 +192,6 @@
 
                                         <video id="player" autoplay playsinline controls></video>
 
-
                                     </div>
                                 </div>
                             </div>
@@ -226,7 +209,7 @@
         </div>
     
     </section><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
+  
     <section class="job-category section" id="contact us"><br><br><br><br><br><br>
         <!--页尾联系我们-->
         <div class="container">
@@ -282,11 +265,11 @@
                                     <div class="single-footer f-link">
                                         <h3>For 团队公司</h3>
                                         <ul>
-                                            <li><a>团队会议人脸的真实性</a></li>
+                                                 <li><a>团队会议人脸的真实性</a></li>
                                             <li><a>人脸识别技术研发</a></li>
                                             <li><a>公司人脸考勤</a></li>
                                             <li><a>人脸识别解决方案</a></li>
-                                        </ul>
+                                   </ul>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-12">
@@ -386,7 +369,6 @@
     </script>
 
 
-
     <!-- yt is following-->
     <script>
         // 摄像头按钮
@@ -395,8 +377,7 @@
         const btn2 = document.querySelector('#btn2');
         // 照片按钮
         const btn3 = document.querySelector('#btn3');
-        // 暂停按钮
-        const stop1 = document.querySelector('#stop1');
+        
         
         let isStreaming = false;
         let videostreaming =false;
@@ -411,46 +392,46 @@
         //     }
         // })
         //stop后端启动
-        stop1.addEventListener('click',function(){
+        // stop1.addEventListener('click',function(){
             
-            if(isStreaming){
-                isStreaming=false; 
-                //暂停摄像头 
-                fetch('/stop_camera', { method: 'POST' })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log('Camera stopped successfully');
-                            // 设置 isStreaming 为 false 表示视频已经停止
-                            isStreaming = false;
-                        } else {
-                            console.error('Failed to stop camera');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error stopping camera:', error);
-                    });
-                }else{
-                    console.log('Video stream is not active')
-                }
-            if(videostreaming){
-                // 暂停视频检测
-                videostreaming = false;
-                fetch('/stop_video')
-                        .then(response =>{
-                            if(response.ok){
-                                console.log('video stopped successfully');
-                                videostreaming = false;
-                            }else{
-                                console.error('Failed to stop camera');
-                            }
-                        }).catch(error => {
-                            console.error('Error stopping camera:', error);
-                        });
-                }else{
-                    console.log('Video  is not active')
-                }
+        //     if(isStreaming){
+        //         isStreaming=false; 
+        //         //暂停摄像头 
+        //         fetch('/stop_camera', { method: 'POST' })
+        //             .then(response => {
+        //                 if (response.ok) {
+        //                     console.log('Camera stopped successfully');
+        //                     // 设置 isStreaming 为 false 表示视频已经停止
+        //                     isStreaming = false;
+        //                 } else {
+        //                     console.error('Failed to stop camera');
+        //                 }
+        //             })
+        //             .catch(error => {
+        //                 console.error('Error stopping camera:', error);
+        //             });
+        //         }else{
+        //             console.log('Video stream is not active')
+        //         }
+        //     if(videostreaming){
+        //         // 暂停视频检测
+        //         videostreaming = false;
+        //         fetch('/stop_video')
+        //                 .then(response =>{
+        //                     if(response.ok){
+        //                         console.log('video stopped successfully');
+        //                         videostreaming = false;
+        //                     }else{
+        //                         console.error('Failed to stop camera');
+        //                     }
+        //                 }).catch(error => {
+        //                     console.error('Error stopping camera:', error);
+        //                 });
+        //         }else{
+        //             console.log('Video  is not active')
+        //         }
                 
-            })
+        //     })
         // 视频检测的后端启动
         btn2.addEventListener('click',function(){
             videostreaming = true;
@@ -497,7 +478,6 @@
                 };
                 fileInput.click(); // 触发文件选择对话框
         })
-
 
 
 
@@ -550,12 +530,14 @@
     
     // 传递摄像头画面,并且每三秒检测一下
     btn1.addEventListener('click',function(){
+        
         startScreen();
     })
 
     async function startScreen() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
+                
                 video: {frameRate: 60}
             });
             // 在屏幕上显示摄像头画面
@@ -574,7 +556,6 @@
                 context.drawImage(videoElement,0,0,canvas.width,canvas.height);
                 socket.emit('videoFrame_need_checked',canvas.toDataURL('image/jpeg'));
             },3000)
-
 
 
         } catch (error) {
@@ -602,11 +583,9 @@
 
 
 
-
     </script>
 
     <!-- socket传递信息 -->
-
 
 <!-- 
     <script>
@@ -643,7 +622,6 @@
             reconnectionDelay: 1000,       // 重新连接延迟（毫秒）
             timeout: 5000                  // 连接超时时间（毫秒）
         });
-
 
         socket.on('connect', function() {
             console.log('已连接socket');
@@ -694,6 +672,6 @@
 
 
 
-
 </body>
 </html>
+
