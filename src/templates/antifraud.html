@@ -83,7 +83,9 @@
             cursor: pointer;
             
         }
-        
+        #player{
+            display : none;
+        }
    
     </style>
 </head>
@@ -192,7 +194,7 @@
                                         <!-- TODO -->
                                         <img id="streaming" src="../static/assets/images/about/small1.jpg" alt="">
 
-                                        
+                                        <video id="player" autoplay playsinline controls></video>
 
 
                                     </div>
@@ -203,7 +205,7 @@
                                     <div class="title2"><img src="../static/assets/images/title_3.png" alt="">结果分析</div>
                                     <div id="confidence"></div>
                                     <div id="classification"></div>
-                                    <video id="player" autoplay playsinline controls></video>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -539,34 +541,37 @@
     //     socket.emit('message_from_server', '开始摄像头')
     // })
     
-    // 传递摄像头画面
+    // 传递摄像头画面,并且每三秒检测一下
     btn1.addEventListener('click',function(){
         startScreen();
     })
-    async function startScreen(){
-        const stream = await navigator.mediaDevices.getUserMedia({
-            video:{
-                width:500,
-                height:300,
-                frameRate:20
-            }
-        }).then(stream =>{
+
+    async function startScreen() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {frameRate: 60}
+            });
+            // 在屏幕上显示摄像头画面
             const videoElement = document.getElementById('player');
+            const picture = document.getElementById('');
+            videoElement.style.display = 'inline-block';
+            isStreaming = true;
             videoElement.srcObject = stream;
-            // create canvas
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
-            setInterval(() =>{
+            // 每个三秒检测一次
+            setInterval(() => {
                 context.drawImage(videoElement,0,0,canvas.width,canvas.height);
-                socket.emit('videoFrame',canvas.toDataURL('image/jpeg'));
-            },1000/20);
+                socket.emit('videoFrame_need_checked',canvas.toDataURL('image/jpeg'));
+            },3000)
 
-        })
-        .catch(error =>{
+
+
+        } catch (error) {
             console.log('Error accessing the camera:', error);
-        })
+        }
     }
-    
+
 
 
 
@@ -621,7 +626,14 @@
         };
     </script> -->
     <script>
-        const socket = io();
+        const videoElement2 = document.getElementById('player2');
+        const socket = io('ws://114.55.234.236:8080', {
+            reconnection: true,            // 启用重新连接
+            reconnectionAttempts: 3,       // 重新连接尝试次数
+            reconnectionDelay: 1000,       // 重新连接延迟（毫秒）
+            timeout: 5000                  // 连接超时时间（毫秒）
+        });
+
 
         socket.on('connect', function() {
             console.log('已连接socket');
@@ -639,9 +651,23 @@
             document.getElementById('classification').innerText = 'Classification: ' + data.classification;
             // 设置图像元素的src属性为data.image_url
             document.getElementById('streaming').src = data.url;
-
+             // 创建 URL 对象
+            const videoUrl = URL.createObjectURL(data.url);
+            // 将 URL 设置为视频元素的 src 属性
+            const videoElement2 = document.getElementById('player2');
+            videoElement2.src = videoUrl;
+                
         });
-
+        // 只需要更新图片的检测结果
+        socket.on('detection_result_withoutpicture', function(data) {
+            console.log('Detection Result:', data);
+                
+            // 更新页面上的置信度和分类信息
+            document.getElementById('confidence').innerText = 'Confidence: ' + data.confidence;
+            document.getElementById('classification').innerText = 'Classification: ' + data.classification;
+            
+           
+        });
 
     </script>
 
