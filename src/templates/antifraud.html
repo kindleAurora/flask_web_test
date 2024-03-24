@@ -62,7 +62,7 @@
             
         }
     
-        #streaming {
+        #picturess {
             max-width: 100%;
             max-height: 100%;
             
@@ -85,6 +85,11 @@
         }
         #player{
             display : none;
+            
+            width: 100%; /* 设置视频宽度为其容器宽度的百分之百 */
+            height: 100%; /* 设置视频高度为其容器高度的百分之百 */
+            object-fit: cover; /* 控制视频如何适应其容器，可以根据需求调整为其他值，如 'contain' */
+
         }
    
     </style>
@@ -134,12 +139,19 @@
                     </div>
                     <div class="button wow fadeInUp" data-wow-delay=".7s" style="text-align: center;">
                         <a href="#start to use" class="btn" style="background-color: white; color: black; font-weight: bold;"
-                        data-toggle="modal" data-target="#signup" class="btn"> 开始使用</a>
+                        data-toggle="modal" data-target="#signup" > 开始使用</a>
                     </div>
+                    <br>
+                    <div class="button wow fadeInUp" data-wow-delay=".2s" style="text-align: center; display: none;" id="stoppp">
+                        <a href="#start to use" class="btn" style="background-color: white; color: black; font-weight: bold;"
+                           data-toggle="modal" data-target="#signup1" id = 'stopp'>暂停使用</a>
+                    </div>
+                    
                 </div>
             </div>
         </div>
     </div>
+
 
     <div class="modal fade form-modal" id="signup" tabindex="-1" aria-hidden="true"><!--摄像头，图片，视频-->
     <div class="modal-dialog max-width-px-840 position-relative">
@@ -192,7 +204,7 @@
                                     <div class="title"><img src="../static/assets/images/title_3.png" alt="">视频</div>
                                     <div id="video">
                                         <!-- TODO -->
-                                        <img id="streaming" src="../static/assets/images/about/small1.jpg" alt="">
+                                        <img id="picturess" src="../static/assets/images/about/small1.jpg" alt="">
 
                                         <video id="player" autoplay playsinline controls></video>
 
@@ -213,13 +225,9 @@
                 </div>
             </div>
         </div>
-       
-
+    
     </section>
-    <div>
-        <!-- 暂停按钮 -->
-        <div class="zanting" id="stop1">暂停检测</div>
-    </div>
+
     <section class="job-category section" id="contact us"><!--页尾联系我们-->
         <div class="container">
             <div class="row">
@@ -553,8 +561,11 @@
             });
             // 在屏幕上显示摄像头画面
             const videoElement = document.getElementById('player');
-            const picture = document.getElementById('');
-            videoElement.style.display = 'inline-block';
+            const picture = document.getElementById('picturess');
+            const zt = document.getElementById('stoppp');
+            zt.style.display = 'block';
+            picture.style.display = 'none';
+            videoElement.style.display = 'inline';
             isStreaming = true;
             videoElement.srcObject = stream;
             const canvas = document.createElement('canvas');
@@ -650,7 +661,7 @@
             document.getElementById('confidence').innerText = 'Confidence: ' + data.confidence;
             document.getElementById('classification').innerText = 'Classification: ' + data.classification;
             // 设置图像元素的src属性为data.image_url
-            document.getElementById('streaming').src = data.url;
+            document.getElementById('picturess').src = data.url;
              // 创建 URL 对象
             const videoUrl = URL.createObjectURL(data.url);
             // 将 URL 设置为视频元素的 src 属性
