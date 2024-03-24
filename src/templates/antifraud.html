@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>人脸反欺诈</title>
+    <meta name="keywords" content="计算机设计大赛-基于深度学习的人脸反欺诈" />
+    <meta name="description" content="基于深度学习的人脸反欺诈技术利用深度神经网络等深度学习模型来识别和检测人脸图像中的欺诈行为，以提高人脸识别系统的安全性和可靠性。这种技术可以用于防止诸如虚假面具、照片、视频等欺诈手段被用来冒充他人身份的行为。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="../static/assets/images/favicon.svg" />
+    <link rel="stylesheet" href="../static/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../static/assets/css/LineIcons.2.0.css" />
+    <link rel="stylesheet" href="../static/assets/css/animate.css" />
+    <link rel="stylesheet" href="../static/assets/css/tiny-slider.css" />
+    <link rel="stylesheet" href="../static/assets/css/glightbox.min.css" />
+    <link rel="stylesheet" href="../static/assets/css/main.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <!-- 服务端使用socket的协议 你好-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+
+
+    <style>
+        .following {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+    
+        .follow_left, .follow_right {
+            flex: 1;
+        }
+    
+        .outkuang, .outkuang2 {
+            padding: 20px;
+            border: 1px solid #7E8890;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    
+        .title, .title2 {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+    
+        .title img {
+            margin-right: 10px;
+        }
+    
+        #video {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            
+        }
+    
+        #picturess {
+            max-width: 100%;
+            max-height: 100%;
+            
+            
+        }
+        .zanting {
+            width: 50px;
+            height: 50px;
+            background-color: #e60909;
+            border-radius: 50%; /* 使按钮变成圆形 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            
+            left: 50%;
+            transform: translate(-50%, -200%);
+            cursor: pointer;
+            
+        }
+        #player{
+            display : none;
+            
+            width: 100%; /* 设置视频宽度为其容器宽度的百分之百 */
+            height: 100%; /* 设置视频高度为其容器高度的百分之百 */
+            object-fit: cover; /* 控制视频如何适应其容器，可以根据需求调整为其他值，如 'contain' */
+
+        }
+   
+    </style>
+</head>
+
+<body>
+    <div id="loading-area"></div>
+    <header class="header"><!--导航栏-->
+        <div class="navbar-area">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-12">
+                        <nav class="navbar navbar-expand-lg">
+                            <a class="navbar-brand logo" href="index.html">
+                                <img class="logo1" src="../static/assets/images/logo/logo.png" alt="Logo" />
+                            </a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                <ul id="nav" class="navbar-nav ml-auto">
+                                    <li class="nav-item"><a href="{{ url_for('index') }}">首页 </a> </li>
+                                    <li class="nav-item"><a href="{{ url_for('faceinput') }}">人脸录入 </a> </li>
+                                    <li class="nav-item"><a href="{{ url_for('facegame') }}">人脸小游戏 </a> </li>
+                                    <li class="nav-item"><a href="{{ url_for('antifraud') }}">人脸反欺诈 </a> </li>
+                                    <li class="nav-item"><a href="#contact us">联系我们 </a> </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="breadcrumbs overlay"><!--人脸反欺诈开始使用-->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">人脸反欺诈</h1>
+                        <p>人脸反欺诈人脸反欺诈人脸反欺诈人脸反欺诈人脸反欺诈<br> 开始使用开始使用开始使用</p>
+                    </div>
+                    <div class="button wow fadeInUp" data-wow-delay=".7s" style="text-align: center;">
+                        <a href="#start to use" class="btn" style="background-color: white; color: black; font-weight: bold;"
+                        data-toggle="modal" data-target="#signup" > 开始使用</a>
+                    </div>
+                    <br>
+                    <div class="button wow fadeInUp" data-wow-delay=".2s" style="text-align: center; display: none;" id="stoppp">
+                        <a href="#start to use" class="btn" style="background-color: white; color: black; font-weight: bold;"
+                           data-toggle="modal" data-target="#signup1" id = 'stopp'>暂停使用</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade form-modal" id="signup" tabindex="-1" aria-hidden="true"><!--摄像头，图片，视频-->
+    <div class="modal-dialog max-width-px-840 position-relative">
+        <button type="button"
+            class="circle-32 btn-reset bg-white pos-abs-tr mt-md-n6 mr-lg-n6 focus-reset z-index-supper"
+            data-dismiss="modal"><i class="lni lni-close"></i></button>
+        <div class="login-modal-main">
+            <div class="row no-gutters">
+                <div class="col-12"><br>
+                    <div class="row">
+                        <div class="nav nav-pills" style="text-align: center;">
+                            <div class="button" style="position: relative; display: inline-block; width: 100%; margin-bottom: 20px;">
+                                <a id="btn1" href="#pills-month" aria-controls="pills-month" class="btn btn-primary" 
+                                style="width: 200px; font-weight: bold; font-size: 1.5em; display: block; margin: 0 auto;" 
+                                data-backdrop="false" data-dismiss="modal" >摄像头</a>
+                                <p>(打开摄像头权限，调用电脑的摄像头，并录制完整的人脸，最终自动上传)</p>
+                            </div>
+                            <div class="button" style="position: relative; display: inline-block; width: 100%; margin-bottom: 20px;">
+                                <a id="btn2" href="#pills-year" aria-controls="pills-year" class="btn btn-primary" 
+                                style="width: 200px; font-weight: bold; font-size: 1.5em; display: block; margin: 0 auto;" 
+                                data-backdrop="false" data-dismiss="modal">视频</a>
+                                <p>(从本地文件夹中获取图片，上传)</p>
+                            </div>
+                            <div class="button" style="position: relative; display: inline-block; width: 100%; margin-bottom: 20px;">
+                                <a id="btn3" href="#pills-year" aria-controls="pills-year" class="btn btn-primary" 
+                                style="width: 200px; font-weight: bold; font-size: 1.5em; display: block; margin: 0 auto;" 
+                                data-backdrop="false" data-dismiss="modal">图片</a>
+                                <p>(从本地文件夹中获取视频，上传)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <section class="section blog-single" id="start to use"><!--视频分析页面-->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1 col-12">
+                    <div class="section-title">
+                        <h2 class="wow fadeInUp" data-wow-delay=".4s">视频分析页面</h2>
+                        <p class="wow fadeInUp" data-wow-delay=".6s">视频内容分析，分析人脸的真实性。包括视频界面和视频结果分析。</p>
+                    </div>
+                    <div class="xiugaicss">
+                        <div class="following">
+                            <div class="follow_left">
+                                <div class="outkuang" style="height: 900px; width: 160%;">
+                                    <div class="title"><img src="../static/assets/images/title_3.png" alt="">视频</div>
+                                    <div id="video" style="height: 90%;">
+                                        <!-- TODO -->
+                                        <img id="picturess" src="../static/assets/images/about/small1.jpg" alt="">
+
+                                        <video id="player" autoplay playsinline controls></video>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="follow_right" style="float: right;">
+                                <div class="outkuang2" style="height: 900px; width: 40%; float: right;">
+                                    <div class="title2"><img src="../static/images/title_4.png" alt="">结果分析</div>
+                                    <div id="confidence"></div>
+                                    <div id="classification"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </section><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    <section class="job-category section" id="contact us"><br><br><br><br><br><br>
+        <!--页尾联系我们-->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2 data-wow-delay=".4s">联系我们</h2>
+                        <p class="wow fadeInUp" data-wow-delay=".6s">如果您有任何问题或建议，请联系我们。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <!-- Start Middle Top -->
+            <div class="footer-middle">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Single Widget -->
+                            <div class="f-about single-footer">
+                                <div class="logo">
+                                    <img class="logo1" src="../static/assets/images/logo/logo.png" alt="Logo" />
+                                </div>
+                                <p>通过以下方式联系我们：</p>
+                                <ul class="contact-address">
+                                    <li><span>Address:</span> 江苏省 南京市 江北新区 浦珠南路30号</li>
+                                    <li><span>Email:</span> xheng040601@outlook.com</li>
+                                    <li><span>Call:</span> 198-5005-0583</li>
+                                </ul>
+                                <div class="footer-social">
+
+                                </div>
+                            </div>
+                            <!-- End Single Widget -->
+                        </div>
+                        <div class="col-lg-8 col-12">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <!-- Single Widget -->
+                                    <div class="single-footer f-link">
+                                        <h3>For 个人用户</h3>
+                                        <ul>
+                                            <li><a>人脸识别登录</a></li>
+                                            <li><a>家居人脸门禁</a></li>
+                                            <li><a>人脸在线支付</a></li>
+                                            <li><a>人脸查房</a></li>
+                                        </ul>
+                                    </div>
+                                    <!-- End Single Widget -->
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <!-- Single Widget -->
+                                    <div class="single-footer f-link">
+                                        <h3>For 团队公司</h3>
+                                        <ul>
+                                            <li><a>团队会议人脸的真实性</a></li>
+                                            <li><a>人脸识别技术研发</a></li>
+                                            <li><a>公司人脸考勤</a></li>
+                                            <li><a>人脸识别解决方案</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <div class="single-footer newsletter">
+                                        <h3>订阅我们的产品</h3>
+                                        <p>提交您的邮箱，随时获得我们的最新产品的消息</p>
+                                        <form action="mail/mail.php" method="get" target="_blank"
+                                            class="newsletter-inner">
+                                            <input name="EMAIL" placeholder="邮箱地址" class="common-input"
+                                                onfocus="this.placeholder = ''" onblur="this.placeholder = '邮箱地址'"
+                                                required="" type="email">
+                                            <div class="button">
+                                                <button class="btn">订阅 <span class="dir-part"></span></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+    <a href="#" class="scroll-top btn-hover">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+    <script src="../static/assets/js/bootstrap.min.js"></script>
+    <script src="../static/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/assets/js/wow.min.js"></script>
+    <script src="../static/assets/js/tiny-slider.js"></script>
+    <script src="../static/assets/js/glightbox.min.js"></script>
+    <script src="../static/assets/js/main.js"></script>
+    <script type="text/javascript">
+        tns({
+            container: '.client-logo-carousel',
+            slideBy: 'page',
+            autoplay: true,
+            autoplayButtonOutput: false,
+            mouseDrag: true,
+            gutter: 15,
+            nav: false,
+            controls: false,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 2,
+                },
+                768: {
+                    items: 3,
+                },
+                992: {
+                    items: 4,
+                },
+                1170: {
+                    items: 6,
+                }
+            }
+        });
+        tns({
+            container: '.testimonial-slider',
+            items: 1,
+            slideBy: 'page',
+            autoplay: false,
+            mouseDrag: true,
+            gutter: 0,
+            nav: false,
+            controls: true,
+            controlsText: ['<i class="lni lni-arrow-left"></i>', '<i class="lni lni-arrow-right"></i>'],
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 1,
+                },
+                768: {
+                    items: 1,
+                },
+                992: {
+                    items: 1,
+                },
+                1170: {
+                    items: 1,
+                }
+            }
+        });
+        GLightbox({
+            'href': '#',
+            'type': 'video',
+            'source': 'youtube', 
+            'width': 900,
+            'autoplayVideos': true,
+        });
+    </script>
+
+
+
+    <!-- yt is following-->
+    <script>
+        // 摄像头按钮
+        const btn1 = document.querySelector('#btn1');
+        // 视频按钮
+        const btn2 = document.querySelector('#btn2');
+        // 照片按钮
+        const btn3 = document.querySelector('#btn3');
+        // 暂停按钮
+        const stop1 = document.querySelector('#stop1');
+        
+        let isStreaming = false;
+        let videostreaming =false;
+        // btn1的后端启动
+        // btn1.addEventListener('click',function(){
+        //     if(!isStreaming){
+        //         fetch('/video_capture')
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        //         isStreaming = true;
+        //     }
+        // })
+        //stop后端启动
+        stop1.addEventListener('click',function(){
+            
+            if(isStreaming){
+                isStreaming=false; 
+                //暂停摄像头 
+                fetch('/stop_camera', { method: 'POST' })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('Camera stopped successfully');
+                            // 设置 isStreaming 为 false 表示视频已经停止
+                            isStreaming = false;
+                        } else {
+                            console.error('Failed to stop camera');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error stopping camera:', error);
+                    });
+                }else{
+                    console.log('Video stream is not active')
+                }
+            if(videostreaming){
+                // 暂停视频检测
+                videostreaming = false;
+                fetch('/stop_video')
+                        .then(response =>{
+                            if(response.ok){
+                                console.log('video stopped successfully');
+                                videostreaming = false;
+                            }else{
+                                console.error('Failed to stop camera');
+                            }
+                        }).catch(error => {
+                            console.error('Error stopping camera:', error);
+                        });
+                }else{
+                    console.log('Video  is not active')
+                }
+                
+            })
+        // 视频检测的后端启动
+        btn2.addEventListener('click',function(){
+            videostreaming = true;
+            var fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'video/*';
+            fileInput.onchange = function(event) {
+                var file = fileInput.files[0];
+                
+                var formData = new FormData();
+                formData.append('video', file);
+                
+                fetch('/upload_video', {
+                    method: 'POST',
+                    body: formData
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+                };
+                fileInput.click(); // 触发文件选择对话框
+        })
+        // 图片检测的后端连接
+        btn3.addEventListener('click',function(){
+            // after_click.style.display = 'none';
+            // section.style.display = 'block';
+            // mask.style.display = 'none';
+            var fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.onchange = function(event) {
+                var file = fileInput.files[0];
+            
+                var formData = new FormData();
+                formData.append('image', file);
+                
+                fetch('/detect_picture', {
+                    method: 'POST',
+                    body: formData
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+                };
+                fileInput.click(); // 触发文件选择对话框
+        })
+
+
+
+
+    // 传递视频流
+    //const player = document.querySelector('#player');
+        
+    // 点击开始摄像头，启动摄像头传送画面
+    //     btn1.addEventListener('click', function() {
+    //         startStream();
+    //     });
+    //     let blobs = [], mediaRecorder;
+    //     async function startScreen() {
+    //         try {
+    //             const stream = await navigator.mediaDevices.getUserMedia({
+    //                 video:{
+    //                     width:500,
+    //                     height:300,
+    //                     frameRate:20
+    //                 }
+    //             });
+    //             // 获取视频
+    //             const videoTrack = stream.getVideoTracks()[0];
+    //             // 获取图片（一帧）
+    //             const imageCapture = new ImageCapture(videoTrack);
+                
+    //             // 定时发送
+    //             setInterval(async()=>{
+    //                 try{
+    //                     const bitmap = await imageCapture.grabFrame();
+    //                     // 转换为Blob对象
+    //                     const blob = await createBlobFromImageBitmap(bitmap);
+                        
+    //                     // 将 Blob 对象发送到后端进行处理
+    //                     socket.send('video_frame',blob);
+
+    //                 }catch (error) {
+    //             console.error('Error grabbing frame:', error);
+    //                 }
+    //         },1000/20);//设置帧率
+    //     }catch (error) {
+    //         console.error('Error accessing camera:', error);
+    //     }
+    // } 
+
+    // try
+    // 发送信息
+    // btn1.addEventListener('click',function(){
+    //     socket.emit('message_from_server', '开始摄像头')
+    // })
+    
+    // 传递摄像头画面,并且每三秒检测一下
+    btn1.addEventListener('click',function(){
+        startScreen();
+    })
+
+    async function startScreen() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {frameRate: 60}
+            });
+            // 在屏幕上显示摄像头画面
+            const videoElement = document.getElementById('player');
+            const picture = document.getElementById('picturess');
+            const zt = document.getElementById('stoppp');
+            zt.style.display = 'block';
+            picture.style.display = 'none';
+            videoElement.style.display = 'inline';
+            isStreaming = true;
+            videoElement.srcObject = stream;
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            // 每个三秒检测一次
+            setInterval(() => {
+                context.drawImage(videoElement,0,0,canvas.width,canvas.height);
+                socket.emit('videoFrame_need_checked',canvas.toDataURL('image/jpeg'));
+            },3000)
+
+
+
+        } catch (error) {
+            console.log('Error accessing the camera:', error);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+    <!-- socket传递信息 -->
+
+
+<!-- 
+    <script>
+        // 创建 WebSocket 连接
+        var socket = new WebSocket("ws://114.55.234.236:8080/antifraud");
+
+        // 连接打开时的回调函数
+        socket.onopen = function(event) {
+            console.log("WebSocket 连接已打开");
+            // 在连接打开时发送消息
+            socket.send("Hello, WebSocket Server!");
+        };
+
+        // 接收消息时的回调函数
+        socket.onmessage = function(event) {
+            console.log("收到服务器消息: " + event.data);
+        };
+
+        // 连接关闭时的回调函数
+        socket.onclose = function(event) {
+            console.log("WebSocket 连接已关闭");
+        };
+
+        // 发生错误时的回调函数
+        socket.onerror = function(error) {
+            console.error("WebSocket 发生错误: ", error);
+        };
+    </script> -->
+    <script>
+        const videoElement2 = document.getElementById('player2');
+        const socket = io('ws://114.55.234.236:8080', {
+            reconnection: true,            // 启用重新连接
+            reconnectionAttempts: 3,       // 重新连接尝试次数
+            reconnectionDelay: 1000,       // 重新连接延迟（毫秒）
+            timeout: 5000                  // 连接超时时间（毫秒）
+        });
+
+
+        socket.on('connect', function() {
+            console.log('已连接socket');
+        });
+
+        socket.on('disconnect', function() {
+            console.log('断开连接');
+        });
+
+        socket.on('detection_result', function(data) {
+            console.log('Detection Result:', data);
+                
+            // 更新页面上的置信度和分类信息
+            document.getElementById('confidence').innerText = 'Confidence: ' + data.confidence;
+            document.getElementById('classification').innerText = 'Classification: ' + data.classification;
+            // 设置图像元素的src属性为data.image_url
+            document.getElementById('picturess').src = data.url;
+             // 创建 URL 对象
+            const videoUrl = URL.createObjectURL(data.url);
+            // 将 URL 设置为视频元素的 src 属性
+            const videoElement2 = document.getElementById('player2');
+            videoElement2.src = videoUrl;
+                
+        });
+        // 只需要更新图片的检测结果
+        socket.on('detection_result_withoutpicture', function(data) {
+            console.log('Detection Result:', data);
+                
+            // 更新页面上的置信度和分类信息
+            document.getElementById('confidence').innerText = 'Confidence: ' + data.confidence;
+            document.getElementById('classification').innerText = 'Classification: ' + data.classification;
+            
+           
+        });
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
