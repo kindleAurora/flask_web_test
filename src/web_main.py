@@ -46,10 +46,6 @@ def handle_disconnect():
 #     print('reveiced video')
 #     pass
 
-# 定义事件处理函数
-@socketio.on('message_from_server')
-def handle_message(data):
-    print('Received message from client:', data)
 
 # 收到需要检测摄像头图片
 @socketio.on('videoFrame_need_checked')
@@ -373,9 +369,9 @@ def detect_picture():
     _, img_encoded = cv2.imencode('.jpg', img_copy)
     img_base64 = base64.b64encode(img_encoded)
     img_url = 'data:image/jpeg;base64,' + img_base64.decode('utf-8')
-    
+    print('ok')
     # 返回检测结果给前端
-    socketio.emit('detection_result', {'confidence': value, 'classification': label1,'url':img_url})
+    socketio.emit('detection_result_picture', {'confidence': value, 'classification': label1,'url':img_url})
     return 'picture ok'
     
 #关于游戏界面的全都在下面(写的依托，草了)
