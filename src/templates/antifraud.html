@@ -122,12 +122,12 @@
                         <h1 class="page-title">人脸反欺诈</h1>
                         <p>人脸反欺诈人脸反欺诈人脸反欺诈人脸反欺诈人脸反欺诈<br> 开始使用开始使用开始使用</p>
                     </div>
-                    <div class="button wow fadeInUp" data-wow-delay=".7s" style="text-align: center;">
+                    <div class="button wow fadeInUp" data-wow-delay=".5s" style="text-align: center;">
                         <a href="#start to use" class="btn" style="background-color: white; color: black; font-weight: bold;"
                         data-toggle="modal" data-target="#signup" > 开始使用</a>
                     </div>
                     <br>
-                    <div class="button wow fadeInUp" data-wow-delay=".2s" style="text-align: center; " id="stoppp">
+                    <div class="button wow fadeInUp" data-wow-delay=".5s" style="text-align: center; " id="stoppp">
                         <a href="#start to use" class="btn" style="background-color: white; color: black; font-weight: bold;"
                            data-toggle="modal" data-target="#signup1" id = 'stopp'>暂停使用</a>
                     </div>
@@ -383,156 +383,88 @@
         let isStreaming = false;
         // 是否在进行视频检测
         let videostreaming =false;
-        // btn1的后端启动
-        // btn1.addEventListener('click',function(){
-        //     if(!isStreaming){
-        //         fetch('/video_capture')
-        //         .catch(error => {
-        //             console.error('Error:', error);
-        //         });
-        //         isStreaming = true;
-        //     }
-        // })
-        //stop后端启动
-        // stop1.addEventListener('click',function(){
-            
-        //     if(isStreaming){
-        //         isStreaming=false; 
-        //         //暂停摄像头 
-        //         fetch('/stop_camera', { method: 'POST' })
-        //             .then(response => {
-        //                 if (response.ok) {
-        //                     console.log('Camera stopped successfully');
-        //                     // 设置 isStreaming 为 false 表示视频已经停止
-        //                     isStreaming = false;
-        //                 } else {
-        //                     console.error('Failed to stop camera');
-        //                 }
-        //             })
-        //             .catch(error => {
-        //                 console.error('Error stopping camera:', error);
-        //             });
-        //         }else{
-        //             console.log('Video stream is not active')
-        //         }
-        //     if(videostreaming){
-        //         // 暂停视频检测
-        //         videostreaming = false;
-        //         fetch('/stop_video')
-        //                 .then(response =>{
-        //                     if(response.ok){
-        //                         console.log('video stopped successfully');
-        //                         videostreaming = false;
-        //                     }else{
-        //                         console.error('Failed to stop camera');
-        //                     }
-        //                 }).catch(error => {
-        //                     console.error('Error stopping camera:', error);
-        //                 });
-        //         }else{
-        //             console.log('Video  is not active')
-        //         }
-                
-        //     })
-        // 视频检测的后端启动
-        btn2.addEventListener('click',function(){
+        // 视频播放的窗口
+        let videoElement = document.getElementById('player');
+        // 摄像头的全局变量
+        let stream;
+        // 图片的位置
+        let picture = document.getElementById('picturess');
+
+        // 本地上传视频，进行检测
+        btn2.addEventListener('click', function() {
             videostreaming = true;
+            isStreaming = true;
             var fileInput = document.createElement('input');
             fileInput.type = 'file';
             fileInput.accept = 'video/*';
             fileInput.onchange = function(event) {
                 var file = fileInput.files[0];
                 var videoURL = URL.createObjectURL(file);
+
                 videoElement.src = videoURL;
-                videoElement.controls = true; // 显示视频控制条
-                
-                
-                
+                videoElement.style.display = 'block';
+                picture.style.display = 'none';
+
+                // 当视频元数据加载完成后
+                videoElement.onloadedmetadata = function() {
+                    // 创建Canvas和上下文
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+
+                    // 设置Canvas的尺寸与视频元素相匹配
+                    canvas.width = videoElement.videoWidth;
+                    canvas.height = videoElement.videoHeight;
+
+                    // 定义定时器以捕获和传输视频帧
+                    intervalID = setInterval(() => {
+                        console.log(1);
+                        console.log(canvas.width);
+                        console.log(canvas.height)
+                        // 绘制视频帧到Canvas
+                        context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                        // 将Canvas转换为DataURL并发送到后端
+                        socket.emit('videoFrame_need_checked', canvas.toDataURL('image/jpeg'));
+                    }, 1000);
+                    // 开始播放视频
+                    videoElement.play();
                 };
-                fileInput.click(); // 触发文件选择对话框
-        })
-        // 图片检测的后端连接
-        btn3.addEventListener('click',function(){
-            // after_click.style.display = 'none';
-            // section.style.display = 'block';
-            // mask.style.display = 'none';
-            var fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = 'image/*';
-            fileInput.onchange = function(event) {
-                var file = fileInput.files[0];
-            
-                var formData = new FormData();
-                formData.append('image', file);
-                
-                fetch('/detect_picture', {
-                    method: 'POST',
-                    body: formData
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-                };
-                fileInput.click(); // 触发文件选择对话框
-        })
+            };
+            fileInput.click(); // 触发文件选择对话框
+        });
 
-
-
-    // 传递视频流
-    //const player = document.querySelector('#player');
+    // 图片检测的后端连接
+    btn3.addEventListener('click',function(){
+        // after_click.style.display = 'none';
+        // section.style.display = 'block';
+        // mask.style.display = 'none';
+        var fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.onchange = function(event) {
+            var file = fileInput.files[0];
         
-    // 点击开始摄像头，启动摄像头传送画面
-    //     btn1.addEventListener('click', function() {
-    //         startStream();
-    //     });
-    //     let blobs = [], mediaRecorder;
-    //     async function startScreen() {
-    //         try {
-    //             const stream = await navigator.mediaDevices.getUserMedia({
-    //                 video:{
-    //                     width:500,
-    //                     height:300,
-    //                     frameRate:20
-    //                 }
-    //             });
-    //             // 获取视频
-    //             const videoTrack = stream.getVideoTracks()[0];
-    //             // 获取图片（一帧）
-    //             const imageCapture = new ImageCapture(videoTrack);
-                
-    //             // 定时发送
-    //             setInterval(async()=>{
-    //                 try{
-    //                     const bitmap = await imageCapture.grabFrame();
-    //                     // 转换为Blob对象
-    //                     const blob = await createBlobFromImageBitmap(bitmap);
-                        
-    //                     // 将 Blob 对象发送到后端进行处理
-    //                     socket.send('video_frame',blob);
+            var formData = new FormData();
+            formData.append('image', file);
+            
+            fetch('/detect_picture', {
+                method: 'POST',
+                body: formData
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            };
+            fileInput.click(); // 触发文件选择对话框
+    })
 
-    //                 }catch (error) {
-    //             console.error('Error grabbing frame:', error);
-    //                 }
-    //         },1000/20);//设置帧率
-    //     }catch (error) {
-    //         console.error('Error accessing camera:', error);
-    //     }
-    // } 
 
-    // try
-    // 发送信息
-    // btn1.addEventListener('click',function(){
-    //     socket.emit('message_from_server', '开始摄像头')
-    // })
-    
     // 传递摄像头画面,并且每一秒检测一下
     btn1.addEventListener('click',function(){
         
         startScreen();
     })
-    // 摄像头的全局变量
-    let stream;
-    let videoElement; 
+    
+    
     async function startScreen() {
         try {
             stream = await navigator.mediaDevices.getUserMedia({
@@ -541,7 +473,7 @@
             });
             // 在屏幕上显示摄像头画面
             videoElement = document.getElementById('player');
-            const picture = document.getElementById('picturess');
+            
             
             
             picture.style.display = 'none';
@@ -565,6 +497,7 @@
     zt.addEventListener('click',function(){
         clearInterval(intervalID);
         isStreaming = false;
+        videostreaming = false;
         console.log(stream);
         if(stream){
             stream.getTracks().forEach(track => track.stop());
@@ -596,33 +529,6 @@
 
     <!-- socket传递信息 -->
 
-<!-- 
-    <script>
-        // 创建 WebSocket 连接
-        var socket = new WebSocket("ws://114.55.234.236:8080/antifraud");
-
-        // 连接打开时的回调函数
-        socket.onopen = function(event) {
-            console.log("WebSocket 连接已打开");
-            // 在连接打开时发送消息
-            socket.send("Hello, WebSocket Server!");
-        };
-
-        // 接收消息时的回调函数
-        socket.onmessage = function(event) {
-            console.log("收到服务器消息: " + event.data);
-        };
-
-        // 连接关闭时的回调函数
-        socket.onclose = function(event) {
-            console.log("WebSocket 连接已关闭");
-        };
-
-        // 发生错误时的回调函数
-        socket.onerror = function(error) {
-            console.error("WebSocket 发生错误: ", error);
-        };
-    </script> -->
     <script>
         const videoElement2 = document.getElementById('player2');
         const socket = io('ws://114.55.234.236:8080', {

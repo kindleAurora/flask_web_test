@@ -50,6 +50,7 @@ def handle_disconnect():
 # 收到需要检测摄像头图片
 @socketio.on('videoFrame_need_checked')
 def videoFrame(data):
+    
     # 使用 socket 返回结果给前端
     # 从 Data URL 中提取出 Base64 编码的图像数据部分
     img_data = data.split(',')[1]
@@ -91,7 +92,7 @@ def videoFrame(data):
         
         label1 = 'false'
     
-    print('ok')
+    print('ok,video')
     socketio.emit('detection_result_withoutpicture', {'confidence': value, 'classification': label1})
 
 
@@ -369,7 +370,7 @@ def detect_picture():
     _, img_encoded = cv2.imencode('.jpg', img_copy)
     img_base64 = base64.b64encode(img_encoded)
     img_url = 'data:image/jpeg;base64,' + img_base64.decode('utf-8')
-    print('ok')
+    print('ok,picture')
     # 返回检测结果给前端
     socketio.emit('detection_result_picture', {'confidence': value, 'classification': label1,'url':img_url})
     return 'picture ok'
