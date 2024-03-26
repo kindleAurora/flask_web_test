@@ -472,7 +472,7 @@
 
         // 传递摄像头画面,并且每一秒检测一下
         btn1.addEventListener('click', function () {
-
+            console.log('start btn1');
             startScreen();
         })
 
@@ -498,9 +498,10 @@
                 const context = canvas.getContext('2d');
                 // 每隔1秒检测一次
                 intervalID = setInterval(() => {
+                    console.log('send pictures -through btn1');
                     context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
                     socket.emit('videoFrame_need_checked', canvas.toDataURL('image/jpeg'));
-                }, 1000)
+                }, 2000)
 
 
             } catch (error) {
@@ -510,6 +511,10 @@
         // 暂停按钮
         zt.addEventListener('click', function () {
             clearInterval(intervalID);
+            if(isStreaming==true & videostreaming==true){
+                videoElement.srcObject = null; // 关闭视频元素的源
+                videoElement.style.display = 'none';
+            }
             isStreaming = false;
             videostreaming = false;
             console.log(stream);
