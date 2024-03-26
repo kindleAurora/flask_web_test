@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>基于深度学习的人脸反欺诈</title>
+    <meta name="keywords" content="计算机设计大赛-基于深度学习的人脸反欺诈" />
+    <meta name="description" content="基于深度学习的人脸反欺诈技术利用深度神经网络等深度学习模型来识别和检测人脸图像中的欺诈行为，以提高人脸识别系统的安全性和可靠性。这种技术可以用于防止诸如虚假面具、照片、视频等欺诈手段被用来冒充他人身份的行为。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="../static/assets/images/favicon.svg" />
+    <link rel="stylesheet" href="../static/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../static/assets/css/LineIcons.2.0.css" />
+    <link rel="stylesheet" href="../static/assets/css/animate.css" />
+    <link rel="stylesheet" href="../static/assets/css/tiny-slider.css" />
+    <link rel="stylesheet" href="../static/assets/css/glightbox.min.css" />
+    <link rel="stylesheet" href="../static/assets/css/main.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div id="loading-area"></div>
+    <header class="header"><!--导航栏-->
+        <div class="navbar-area">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-12">
+                        <nav class="navbar navbar-expand-lg">
+                            <a class="navbar-brand logo" href="index.html">
+                                <img class="logo1" src="../static/assets/images/logo/logo.png" alt="Logo" />
+                            </a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                <ul id="nav" class="navbar-nav ml-auto">
+                                    <li class="nav-item"><a href="{{ url_for('index') }}">首页 </a> </li>
+                                    <li class="nav-item"><a href="{{ url_for('faceinput') }}">人脸录入 </a> </li>
+                                    <li class="nav-item"><a href="{{ url_for('index') }}">人脸小游戏 </a> </li>
+                                    <li class="nav-item"><a href="{{ url_for('index') }}">在线体验 </a> </li>
+                                    <li class="nav-item"><a href="#contact us">联系我们 </a> </li>
+                                </ul>
+                            </div>
+                            <div class="button">
+                                <a href="javacript:" data-toggle="modal" data-target="#login" class="login"><i
+                                    class="lni lni-lock-alt"></i>管理员</a>
+                                <a href="javacript:" data-toggle="modal" data-target="#signup" class="btn">注册</a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="job-category section" id="contact us"><!--页尾联系我们-->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2 data-wow-delay=".4s">联系我们</h2>
+                        <p class="wow fadeInUp" data-wow-delay=".6s">如果您有任何问题或建议，请联系我们。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <!-- Start Middle Top -->
+            <div class="footer-middle">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Single Widget -->
+                            <div class="f-about single-footer">
+                                <div class="logo">
+                                    <img class="logo1" src="../static/assets/images/logo/logo.png" alt="Logo" />
+                                </div>
+                                <p>通过以下方式联系我们：</p>
+                                <ul class="contact-address">
+                                    <li><span>Address:</span> 江苏省 南京市 江北新区 浦珠南路30号</li>
+                                    <li><span>Email:</span> xheng040601@outlook.com</li>
+                                    <li><span>Call:</span> 198-5005-0583</li>
+                                </ul>
+                                <div class="footer-social">
+
+                                </div>
+                            </div>
+                            <!-- End Single Widget -->
+                        </div>
+                        <div class="col-lg-8 col-12">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <!-- Single Widget -->
+                                    <div class="single-footer f-link">
+                                        <h3>For 个人用户</h3>
+                                        <li><a>人脸识别登录</a></li>
+                                        <li><a>家居人脸门禁</a></li>
+                                        <li><a>人脸在线支付</a></li>
+                                        <li><a>人脸查房</a></li>
+                                    </div>
+                                    <!-- End Single Widget -->
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <!-- Single Widget -->
+                                    <div class="single-footer f-link">
+                                        <h3>For 团队公司</h3>
+                                        <li><a>团队会议人脸的真实性</a></li>
+                                        <li><a>人脸识别技术研发</a></li>
+                                        <li><a>公司人脸考勤</a></li>
+                                        <li><a>人脸识别解决方案</a></li>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <div class="single-footer newsletter">
+                                        <h3>订阅我们的产品</h3>
+                                        <p>提交您的邮箱，随时获得我们的最新产品的消息</p>
+                                        <form action="mail/mail.php" method="get" target="_blank"
+                                            class="newsletter-inner">
+                                            <input name="EMAIL" placeholder="邮箱地址" class="common-input"
+                                                onfocus="this.placeholder = ''" onblur="this.placeholder = '邮箱地址'"
+                                                required="" type="email">
+                                            <div class="button">
+                                                <button class="btn">订阅 <span class="dir-part"></span></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <a href="#" class="scroll-top btn-hover">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+    <script src="../static/assets/js/bootstrap.min.js"></script>
+    <script src="../static/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/assets/js/wow.min.js"></script>
+    <script src="../static/assets/js/tiny-slider.js"></script>
+    <script src="../static/assets/js/glightbox.min.js"></script>
+    <script src="../static/assets/js/main.js"></script>
+    <script type="text/javascript">
+        tns({
+            container: '.client-logo-carousel',
+            slideBy: 'page',
+            autoplay: true,
+            autoplayButtonOutput: false,
+            mouseDrag: true,
+            gutter: 15,
+            nav: false,
+            controls: false,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 2,
+                },
+                768: {
+                    items: 3,
+                },
+                992: {
+                    items: 4,
+                },
+                1170: {
+                    items: 6,
+                }
+            }
+        });
+        tns({
+            container: '.testimonial-slider',
+            items: 1,
+            slideBy: 'page',
+            autoplay: false,
+            mouseDrag: true,
+            gutter: 0,
+            nav: false,
+            controls: true,
+            controlsText: ['<i class="lni lni-arrow-left"></i>', '<i class="lni lni-arrow-right"></i>'],
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 1,
+                },
+                768: {
+                    items: 1,
+                },
+                992: {
+                    items: 1,
+                },
+                1170: {
+                    items: 1,
+                }
+            }
+        });
+        GLightbox({
+            'href': '#',
+            'type': 'video',
+            'source': 'youtube', 
+            'width': 900,
+            'autoplayVideos': true,
+        });
+    </script>
+    <script>
+        document.getElementById('register-btn').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('login-btn').classList.remove('active');
+            document.getElementById('register-btn').classList.add('active');
+            document.getElementById('pills-year').classList.remove('show', 'active');
+            document.getElementById('pills-month').classList.add('show', 'active');
+        });
+    
+        document.getElementById('login-btn').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('register-btn').classList.remove('active');
+            document.getElementById('login-btn').classList.add('active');
+            document.getElementById('pills-month').classList.remove('show', 'active');
+            document.getElementById('pills-year').classList.add('show', 'active');
+        });
+    </script>
+</body>
+</html>

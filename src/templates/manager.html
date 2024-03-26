@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>基于深度学习的人脸反欺诈</title>
+    <meta name="keywords" content="计算机设计大赛-基于深度学习的人脸反欺诈" />
+    <meta name="description" content="基于深度学习的人脸反欺诈技术利用深度神经网络等深度学习模型来识别和检测人脸图像中的欺诈行为，以提高人脸识别系统的安全性和可靠性。这种技术可以用于防止诸如虚假面具、照片、视频等欺诈手段被用来冒充他人身份的行为。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="../static/assets/images/favicon.svg" />
+    <link rel="stylesheet" href="../static/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../static/assets/css/LineIcons.2.0.css" />
+    <link rel="stylesheet" href="../static/assets/css/animate.css" />
+    <link rel="stylesheet" href="../static/assets/css/tiny-slider.css" />
+    <link rel="stylesheet" href="../static/assets/css/glightbox.min.css" />
+    <link rel="stylesheet" href="../static/assets/css/main.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div id="loading-area"></div>
+    <header class="header"><!--导航栏-->
+        <div class="navbar-area">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-12">
+                        <nav class="navbar navbar-expand-lg">
+                            <a class="navbar-brand logo" href="index.html">
+                                <img class="logo1" src="../static/assets/images/logo/logo.png" alt="Logo" />
+                            </a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                <ul id="nav" class="navbar-nav ml-auto">
+                                    <li class="nav-item"><a href="{{ url_for('index') }}">首页 </a> </li>
+                                    <li class="nav-item"><a href="{{ url_for('faceinput') }}">人脸录入 </a> </li>
+                                    <li class="nav-item"><a href="{{ url_for('index') }}">人脸小游戏 </a> </li>
+                                    <li class="nav-item"><a href="{{ url_for('index') }}">在线体验 </a> </li>
+                                    <li class="nav-item"><a href="#contact us">联系我们 </a> </li>
+                                </ul>
+                            </div>
+                            <div class="button">
+                                <a href="javacript:" data-toggle="modal" data-target="#login" class="login"><i
+                                    class="lni lni-lock-alt"></i>管理员</a>
+                                <a href="javacript:" data-toggle="modal" data-target="#signup" class="btn">注册</a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="breadcrumbs overlay">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">Frequently Asked Questions</h1>
+                        <p>Business plan draws on a wide range of knowledge from different business<br> disciplines.
+                            Business draws on a wide range of different business .</p>
+                    </div>
+                    <ul class="breadcrumb-nav">
+                        <li><a href="index.html">Home</a></li>
+                        <li>Faq</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumbs -->
+
+    <!-- Start Faq Area -->
+    <section class="faq-area section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <!-- Item -->
+                    <div class="d-flex single-faq wow fadeInUp" data-wow-delay=".2s">
+                        <!-- Badge -->
+                        <div class="cercle">
+                            <span>?</span>
+                        </div>
+                        <div class="content">
+                            <!-- Heading -->
+                            <h4 class="heading">
+                                How do I place an ad?
+                            </h4>
+                            <!-- Text -->
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam consectetur sit amet ante nec vulputate. Nulla aliquam, justo auctor consequat tincidunt, arcu erat mattis lorem consectetur adipiscing elit.
+                            </p>
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam consectetur sit amet ante nec vulputate.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item -->
+                    <div class="d-flex single-faq wow fadeInUp" data-wow-delay=".4s">
+                        <!-- Badge -->
+                        <div class="cercle">
+                            <span>?</span>
+                        </div>
+                        <div class="content">
+                            <!-- Heading -->
+                            <h4 class="heading">
+                                Do I get free updates?
+                            </h4>
+                            <!-- Text -->
+                            <p class="text">
+                                Yes. We update all of our themes with each Bootstrap update, plus are constantly adding
+                                new components, pages, and features to our themes.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item -->
+                    <div class="d-flex single-faq wow fadeInUp" data-wow-delay=".4s">
+                        <!-- Badge -->
+                        <div class="cercle">
+                            <span>?</span>
+                        </div>
+                        <div class="content">
+                            <!-- Heading -->
+                            <h4 class="heading">
+                                How Long will it take to get my package?
+                            </h4>
+                            <!-- Text -->
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas expedita, repellendus est nemo cum quibusdam optio, voluptate hic a tempora facere. 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <!-- Item -->
+                    <div class="d-flex single-faq wow fadeInUp" data-wow-delay=".2s">
+                        <!-- Badge -->
+                        <div class="cercle">
+                            <span>?</span>
+                        </div>
+                        <div class="content">
+                            <!-- Heading -->
+                            <h4 class="heading">
+                                Is there a money back guarantee?
+                            </h4>
+                            <!-- Text -->
+                            <p class="text">
+                                Yup! Bootstrap Themes come with a satisfaction guarantee. Submit a return and get your
+                                money back.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item -->
+                    <div class="d-flex single-faq wow fadeInUp" data-wow-delay=".4s">
+                        <!-- Badge -->
+                        <div class="cercle">
+                            <span>?</span>
+                        </div>
+                        <div class="content">
+                            <!-- Heading -->
+                            <h4 class="heading">
+                                Does it work with Rails? React? Laravel?
+                            </h4>
+                            <!-- Text -->
+                            <p class="text">
+                                Yes. Landkit has basic CSS/JS files you can include. If you want to enable deeper
+                                customization, you can integrate it into your assets pipeline or build processes.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item -->
+                    <div class="d-flex single-faq wow fadeInUp" data-wow-delay=".4s">
+                        <!-- Badge -->
+                        <div class="cercle">
+                            <span>?</span>
+                        </div>
+                        <div class="content">
+                            <!-- Heading -->
+                            <h4 class="heading">
+                                How can i cancel or change my order?
+                            </h4>
+                            <!-- Text -->
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas expedita, repellendus est nemo cum quibusdam optio, voluptate hic a tempora facere, nihil non itaque alias similique quas quam odit consequatur.
+                            </p>
+                            <p class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas expedita, repellendus est nemo cum quibusdam optio, voluptate hic a tempora facere.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- / .row -->
+        </div> <!-- / .container -->
+    </section>
+    <!-- End Faq Area -->
+
+    <!-- Login Modal -->
+    <div class="modal fade form-modal" id="login" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog max-width-px-840 position-relative">
+            <button type="button"
+                class="circle-32 btn-reset bg-white pos-abs-tr mt-md-n6 mr-lg-n6 focus-reset z-index-supper"
+                data-dismiss="modal"><i class="lni lni-close"></i></button>
+            <div class="login-modal-main">
+                <div class="row no-gutters">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="heading">
+                                <h3>Login From Here</h3>
+                                <p>Log in to continue your account <br> and explore new jobs.</p>
+                            </div>
+                            <div class="social-login">
+                                <ul>
+                                    <li><a class="linkedin" href="#"><i class="lni lni-linkedin-original"></i> Log in
+                                            with LinkedIn</a></li>
+                                    <li><a class="google" href="#"><i class="lni lni-google"></i> Log in with
+                                            Google</a></li>
+                                    <li><a class="facebook" href="#"><i class="lni lni-facebook-original"></i> Log in
+                                            with Facebook</a></li>
+                                </ul>
+                            </div>
+                            <div class="or-devider">
+                                <span>Or</span>
+                            </div>
+                            <form action="/">
+                                <div class="form-group">
+                                    <label for="email" class="label">E-mail</label>
+                                    <input type="email" class="form-control" placeholder="example@gmail.com" id="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="label">Password</label>
+                                    <div class="position-relative">
+                                        <input type="password" class="form-control" id="password"
+                                            placeholder="Enter password">
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex flex-wrap justify-content-between">
+                                    <!-- Default checkbox -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            id="flexCheckDefault" />
+                                        <label class="form-check-label" for="flexCheckDefault">Remember password</label>
+                                    </div>
+                                    <a href="" class="font-size-3 text-dodger line-height-reset">Forget Password</a>
+                                </div>
+                                <div class="form-group mb-8 button">
+                                    <button class="btn ">Log in
+                                    </button>
+                                </div>
+                                <p class="text-center create-new-account">Don’t have an account? <a href="#">Create a free account</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Login Modal -->
+
+    <!-- Signup Modal -->
+    <div class="modal fade form-modal" id="signup" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog max-width-px-840 position-relative">
+            <button type="button"
+                class="circle-32 btn-reset bg-white pos-abs-tr mt-md-n6 mr-lg-n6 focus-reset z-index-supper"
+                data-dismiss="modal"><i class="lni lni-close"></i></button>
+            <div class="login-modal-main">
+                <div class="row no-gutters">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="heading">
+                                <h3>Create a free Account <br> Today</h3>
+                                <p>Create your account to continue <br> and explore new jobs.</p>
+                            </div>
+                            <div class="social-login">
+                                <ul>
+                                    <li><a class="linkedin" href="#"><i class="lni lni-linkedin-original"></i> Import from LinkedIn</a></li>
+                                    <li><a class="google" href="#"><i class="lni lni-google"></i> Import from
+                                            Google</a></li>
+                                    <li><a class="facebook" href="#"><i class="lni lni-facebook-original"></i> Import from Facebook</a></li>
+                                </ul>
+                            </div>
+                            <div class="or-devider">
+                                <span>Or</span>
+                            </div>
+                            <form action="/">
+                                <div class="form-group">
+                                    <label for="email" class="label">E-mail</label>
+                                    <input type="email" class="form-control" placeholder="example@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="label">Password</label>
+                                    <div class="position-relative">
+                                        <input type="password" class="form-control"
+                                            placeholder="Enter password">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="label">Confirm Password</label>
+                                    <div class="position-relative">
+                                        <input type="password" class="form-control"
+                                            placeholder="Enter password">
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex flex-wrap justify-content-between">
+                                    <!-- Default checkbox -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="">
+                                        <label class="form-check-label" for="flexCheckDefault">Agree to the <a
+                                                href="#">Terms & Conditions</a></label>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-8 button">
+                                    <button class="btn ">Sign Up
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Signup Modal -->
+
+    
+
+
+
+    <!-- ========================= scroll-top ========================= -->
+    <a href="#" class="scroll-top btn-hover">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+    <script src="../static/assets/js/bootstrap.min.js"></script>
+    <script src="../static/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/assets/js/wow.min.js"></script>
+    <script src="../static/assets/js/tiny-slider.js"></script>
+    <script src="../static/assets/js/glightbox.min.js"></script>
+    <script src="../static/assets/js/main.js"></script>
+    <script type="text/javascript">
+        tns({
+            container: '.client-logo-carousel',
+            slideBy: 'page',
+            autoplay: true,
+            autoplayButtonOutput: false,
+            mouseDrag: true,
+            gutter: 15,
+            nav: false,
+            controls: false,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 2,
+                },
+                768: {
+                    items: 3,
+                },
+                992: {
+                    items: 4,
+                },
+                1170: {
+                    items: 6,
+                }
+            }
+        });
+        tns({
+            container: '.testimonial-slider',
+            items: 1,
+            slideBy: 'page',
+            autoplay: false,
+            mouseDrag: true,
+            gutter: 0,
+            nav: false,
+            controls: true,
+            controlsText: ['<i class="lni lni-arrow-left"></i>', '<i class="lni lni-arrow-right"></i>'],
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 1,
+                },
+                768: {
+                    items: 1,
+                },
+                992: {
+                    items: 1,
+                },
+                1170: {
+                    items: 1,
+                }
+            }
+        });
+        GLightbox({
+            'href': '#',
+            'type': 'video',
+            'source': 'youtube', 
+            'width': 900,
+            'autoplayVideos': true,
+        });
+    </script>
+    <script>
+        document.getElementById('register-btn').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('login-btn').classList.remove('active');
+            document.getElementById('register-btn').classList.add('active');
+            document.getElementById('pills-year').classList.remove('show', 'active');
+            document.getElementById('pills-month').classList.add('show', 'active');
+        });
+    
+        document.getElementById('login-btn').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('register-btn').classList.remove('active');
+            document.getElementById('login-btn').classList.add('active');
+            document.getElementById('pills-month').classList.remove('show', 'active');
+            document.getElementById('pills-year').classList.add('show', 'active');
+        });
+    </script>
+</body>
+</html>
