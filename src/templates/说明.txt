@@ -1,0 +1,8 @@
+index 主页
+faceinput 人脸输入（可用于登陆时人脸登录）
+facegame 人脸小游戏
+antifraud 人脸反欺诈
+404 错误界面不用管但是留着
+manager 管理员界面
+test 测试（不用管）
+model 模板通篇（不用管）

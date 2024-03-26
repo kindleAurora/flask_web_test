@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload File</title>
+</head>
+<body>
+    <a href="#" id="uploadLink">上传文件</a>
+    <input type="file" id="fileInput" style="display: none;">
+
+    <script>
+        // 获取 <a> 标签和 <input> 元素
+        var uploadLink = document.getElementById('uploadLink');
+        var fileInput = document.getElementById('fileInput');
+
+        // 当 <a> 标签被点击时触发
+        uploadLink.addEventListener('click', function(event) {
+            // 阻止默认行为（不跳转到链接的 href 地址）
+            event.preventDefault();
+            // 触发隐藏的 <input type="file"> 元素的点击事件
+            fileInput.click();
+        });
+
+        // 当文件选择框的文件被改变时触发
+        fileInput.addEventListener('change', function() {
+            // 可以在这里添加上传文件的逻辑
+            console.log("选择的文件：" + fileInput.files[0].name);
+        });
+    </script>
+</body>
+</html>
