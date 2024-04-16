@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>架构介绍（技术路线）</title>
+    <meta name="keywords" content="彼何人斯？小心有诈--对抗三维人脸伪造及欺骗的反诈检测服务" />
+    <meta name="description"
+        content="用户可以利用摄像头上传视频和照片以进行人脸欺诈检测。我们的系统能够通过深度学习的方法分析上传的数据，并辨别其中是否存在虚假人脸，例如3D高保真面具、2D照片以及其他对抗性照片，如面具或帽子遮挡等。一旦发现虚假人脸，系统将立即发出警报，从而有效解决了人脸安全问题。" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="../static/assets/images/favicon.svg" />
+    <link rel="stylesheet" href="../static/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../static/assets/css/LineIcons.2.0.css" />
+    <link rel="stylesheet" href="../static/assets/css/animate.css" />
+    <link rel="stylesheet" href="../static/assets/css/tiny-slider.css" />
+    <link rel="stylesheet" href="../static/assets/css/glightbox.min.css" />
+    <link rel="stylesheet" href="../static/assets/css/main.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=AM_HTMLorMML-full">
+    </script>
+</head>
+
+<body>
+    <div id="loading-area"></div>
+
+      <!--导航栏-->
+      <header class="header">
+        <div class="navbar-area">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-12">
+                        <nav class="navbar navbar-expand-lg">
+                            <a class="navbar-brand logo" href="index.html">
+                                <img class="logo1" src="../static/assets/images/logo/logo.png" alt="Logo" />
+                            </a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation" style="background-color: grey;">
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                <ul id="nav" class="navbar-nav ml-auto">
+                                    <li class="nav-item"><a href="{{ url_for('index') }}">首页 </a> </li>
+                                    <li class="nav-item"><a href="#project induction">项目介绍 </a> </li>
+                                    <li class="nav-item"><a href="{{ url_for('technology') }}">项目技术</a> </li>
+                                    <li class="nav-item"><a href="{{url_for('resume')}}">成员介绍</a></li>
+                                    <li class="nav-item"><a href="{{ url_for('online_detection') }}">在线体验 </a> </li>
+                                    <li class="nav-item"><a href="#contact us">联系我们 </a> </li>
+                                </ul>
+                            </div>
+                            <div class="button">
+                                <a href="javacript:" data-toggle="modal" data-target="#login" class="login"><i
+                                        class="lni lni-lock-alt"></i>管理员</a>
+                                <a href="javacript:" data-toggle="modal" data-target="#signup" class="btn">注册</a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--开头部分-->
+    <section class="hero-area style4">
+        <div class="hero-inner">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-lg-10 offset-lg-1 co-12">
+                        <div class="inner-content">
+                            <div class="hero-text">
+                                <h1 class="wow fadeInUp" data-wow-delay=".3s">项目实现的技术</h1>
+                                <p class="wow fadeInUp" data-wow-delay=".5s">
+                                    我们采用VIT-L作为特征提取器，并结合渐进训练策略，在多种计算机视觉任务中取得优异表现。系统部署采用Nginx+uWSGI+Flask+MySQL架构，保障高性能和安全性。
+                                </p>
+                                <div class="button wow fadeInUp" data-wow-delay=".7s">
+                                    <a href="#bigdog" class="btn btn-alt"> 查看详情</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="job-search-wrap-two mt-50 wow fadeInUp" data-wow-delay=".7s" style="width: 100%;">
+                    <div class="job-search-form" style="display: flex;
+                    justify-content: space-between;
+                    width: 100%;">
+                        <form><br><br><br>
+                            <div class="single-field-item keyword" style="flex: 1;
+                            margin: 0 10px;
+                            padding: 20px;
+                            border: 1px solid #ccc;
+                            border-radius: 5px;">
+                                <label for="keyword">VIT-L模型</label>
+                                <p class="wow fadeInUp" data-wow-delay=".5s">
+                                    VIT-L模型是一种基于Transformer架构的视觉注意力模型，通过自注意力机制捕捉图像全局信息和像素关系。</p>
+                            </div>
+                            <div class="single-field-item location" style="flex: 1;
+                            margin: 0 10px;
+                            padding: 20px;
+                            border: 1px solid #ccc;
+                            border-radius: 5px;">
+                                <label for="location">渐进训练 + 动态特征队列</label>
+                                <p class="wow fadeInUp" data-wow-delay=".5s">
+                                    渐进训练结合动态特征队列，针对深度网络中的非平稳数据设计的算法，提高了模型性能和准确度。</p>
+                            </div>
+                            <div class="single-field-item location" style="flex: 1;
+                            margin: 0 10px;
+                            padding: 20px;
+                            border: 1px solid #ccc;
+                            border-radius: 5px;">
+                                <label for="location">Nginx + uWSGI + Flask + MySQL架构</label>
+                                <p class="wow fadeInUp" data-wow-delay=".5s">
+                                    利用Nginx作为反向代理服务器，uWSGI连接Flask与Nginx，Flask处理应用逻辑，MySQL用于数据存储。</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--黑色方块背景-->
+    <section class="apply-process style4 section" style="padding-top: 180px; background-color: #081828;" id="bigdog">
+        <div class="container">
+            <div class="row">
+            </div>
+        </div>
+    </section>
+
+    <!--VIT-L模型-->
+    <section class=" testimonials">
+        <img class="patern2 wow fadeInLeft" data-wow-delay=".5s" src="../static/assets/images/testimonial/patern1.png"
+            alt="#">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-12">
+                    <div class="section-title align-left wow fadeInLeft" data-wow-delay=".3s">
+                        <h2>VIT-L模型</h2>
+                        <p class="wow fadeInUp" data-wow-delay=".6s">
+                            VIT-L模型是一种基于Transformer架构的视觉注意力模型，通过自注意力机制捕捉图像全局信息和像素关系。</p>
+                    </div>
+                </div>
+
+                <!--之前写的模型介绍注释-->
+                <div class="col-md-6 col-12" style="text-align: center; z-index: 9;">
+                    <a class=" wow fadeInUp" data-wow-delay=".8s" style="text-align: center;">
+                        <div class="icon" style="text-align: center; color: white;">
+                            `\mathbf{Z}_{0}
+                            =[\mathbf{x}_{class};\mathbf{x}_{p}^{1}\mathbf{E};\mathbf{x}_{p}^{2}\mathbf{E};\cdots;\mathbf{x}_{p}^{N}\mathbf{E}]+\mathbf{E}_{pos},
+                            \mathbf{E}\in\mathbb{R}^{(P^{2}\cdot C)\times D},\mathbf{E}_{pos}\in\mathbb{R}^{(N+1)\times
+                            D} \quad(1)`<br><br>
+                            `\mathbf{z^{\prime}}_{\l} =\MSA(LN(\mathbf{z}_{\l-1}))+\mathbf{z}_{\l-1}, \l=1\ldots L
+                            \quad(2)`<br><br>
+                            `\mathbf{z}_{\l} =MLP(LN(\mathbf{z^{\prime}}_{\l}))+\mathbf{z^{\prime}}_{\l}, \l=1\ldots L
+                            \quad(3)`<br><br>
+                            `\mathbf{y} {}=LN(\mathbf{z}_{L}^{0}) \quad(4)`<br>
+                        </div>
+                    </a>
+                </div>
+                <br><br><br><br><br><br><br><br><br>
+
+                <p class="wow fadeInUp" data-wow-delay=".5s" style="color: white;"><br>
+                    &#12288;&#12288;VIT-L（Vision Transformer -
+                    Large）是一种基于Transformer架构的视觉注意力模型，用于图像特征提取。与传统的卷积神经网络（CNN）相比，VIT-L采用了完全不同的结构。它将输入的图像分割成固定数量的图块，并将这些图块转换成序列形式。每个图块通过一个线性投影层转换成一维特征向量，作为Transformer的输入。-L特征提取器的面部欺骗攻击检测（FAS）方法。
+                </p>
+                <a class=" wow fadeInUp" data-wow-delay=".8s" style="text-align: center;">
+                    <div class="icon" style="text-align: center;">
+                        <img class="logo1" src="../static/assets/images/instruction/antifraud.svg" alt="Logo"
+                            style="height: 100%; width: 100%;" />
+                    </div><br><br>
+                </a><br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a class="wow fadeInUp" data-wow-delay=".8s" style="text-align: center;">
+                            <div class="icon" style="text-align: center;">
+                                <img class="logo1" src="../static/assets/images/instruction/20190504124806248.png"
+                                    alt="Logo" style="width: 100%;" />
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6"><br><br>
+                        <p class="wow fadeInUp" data-wow-delay=".5s" style="color: white;">
+                            &#12288;&#12288;VIT-L模型利用了多头自注意力机制，以一种全局的方式对这些特征向量进行关注和交互，从而捕捉到图像中的全局信息和像素之间的关系。这种注意力机制使得VIT-L能够更好地处理图像中的长距离依赖关系，有利于捕捉图像中不同部分之间的关联性，从而提高了特征表示的能力。
+                        </p>
+                    </div>
+                </div>
+
+                <div><br><br>
+                    <p class="wow fadeInUp" data-wow-delay=".5s" style="color: white;">
+                        &#12288;&#12288;此外，VIT-L模型还包含多层前馈神经网络（Feed-Forward Neural
+                        Network）作为其核心组件之一，用于对特征向量进行非线性变换和映射。这些前馈网络可以帮助VIT-L模型更好地学习和表示图像特征。在多种计算机视觉任务上，VIT-L模型已经取得了与传统CNN模型相媲美甚至超越的性能，表明了其在图像特征提取方面的有效性和潜力。
+                    </p><br>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6"><br><br>
+                        <p class="wow fadeInUp" data-wow-delay=".5s" style="color: white;">
+                            &#12288;&#12288;VIT-L模型的成功还归功于其在Transformer架构下的优化和改进。通过将图像分割为图块并引入自注意力机制，VIT-L能够在处理图像时保持全局关注，而不需要使用卷积操作。这种结构的变革使得VIT-L在处理各种尺度和复杂度的图像时表现出色，同时也为图像特征提取带来了新的可能性和方法。
+                        </p>
+                    </div>
+                    <div class="col-md-6" style="text-align: center;">
+                        <a class="wow fadeInUp" data-wow-delay=".8s" style="text-align: center;">
+                            <div class="icon" style="text-align: center;">
+                                <img class="logo1" src="../static/assets/images/instruction/R.png" alt="Logo"
+                                    style="width: 100%;" /><br><br>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--渐进训练 + 动态特征队列-->
+    <section class="job-category style2 section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2 class="wow fadeInUp" data-wow-delay=".4s">渐进训练 + 动态特征队列</h2>
+                        <p class="wow fadeInUp" data-wow-delay=".6s">渐进训练结合动态特征队列，针对深度网络中的非平稳数据设计的算法，提高了模型性能和准确度。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cat-head">
+                <div class="row">
+                    <div>
+                        <p class="wow fadeInUp" data-wow-delay=".5s" style="color: black;">
+                            &#12288;&#12288;渐进训练策略算法的提出：在VIT-L模型特征提取完成后，我们提出了一种渐进训练策略算法，旨在解决深度网络在处理大量非平稳数据时所面临的挑战。该算法的设计框架如图所示，其核心思想是逐步引入训练数据，使模型逐渐适应数据的变化，从而提高模型的鲁棒性和泛化能力。这种策略不仅能有效应对数据的非平稳性，还能保留模型对之前学习过的类别的记忆，使模型在面对长期训练时能够保持高效的学习状态。
+                        </p><br><br>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <a class="single-cat wow fadeInUp" data-wow-delay=".2s">
+                            <div class="top-side">
+                                <img src="../static/assets/images/jobs/category-1.jpg" alt="#">
+                            </div>
+                            <div class="bottom-side">
+                                <h3>渐进性引入数据：逐步引入训练数据，使模型逐渐适应数据的变化，不引起过激。</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <a class="single-cat wow fadeInUp" data-wow-delay=".4s">
+                            <div class="top-side">
+                                <img src="../static/assets/images/jobs/category-2.jpg" alt="#">
+                            </div>
+                            <div class="bottom-side">
+                                <h3>保留先前学习：保留模型对之前学习过的类别的记忆，以提高模型在长期训练中的性能。</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <a class="single-cat wow fadeInUp" data-wow-delay=".6s">
+                            <div class="top-side">
+                                <img src="../static/assets/images/jobs/category-3.jpg" alt="#">
+                            </div>
+                            <div class="bottom-side">
+                                <h3>应对非平稳性：有效解决深度网络在处理大量非平稳数据时所面临的挑战。</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <a class="single-cat wow fadeInUp" data-wow-delay=".8s">
+                            <div class="top-side">
+                                <img src="../static/assets/images/jobs/category-4.jpg" alt="#">
+                            </div>
+                            <div class="bottom-side">
+                                <h3>提升鲁棒性：提高模型的鲁棒性和泛化能力，使其在复杂环境下表现出色。</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div><br><br>
+                        <p class="wow fadeInUp" data-wow-delay=".5s" style="color: black;">
+                            &#12288;&#12288;动态特征队列的引入：为了进一步提升模型的性能和准确度，在训练过程中我们引入了动态特征队列。这个队列的主要作用是通过负样本来更新队列，将传统的二分类任务转变为多分类任务。通过引入动态特征队列，我们不仅减少了模型参数设置的复杂性，还能够更好地应对多种攻击类型，提高了模型的鲁棒性和泛化能力。
+                        </p><br>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="wow fadeInUp" data-wow-delay=".8s" style="text-align: center;">
+                                <div class="icon" style="text-align: center;">
+                                    <img class="logo1" src="../static/assets/images/instruction/antifraud2(1).svg"
+                                        alt="Logo" style="width: 100%;" />
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6"><br><br>
+                            <p class="wow fadeInUp" data-wow-delay=".5s" style="color: black">
+                                &#12288;&#12288;算法的优势和性能提升：通过采用渐进训练策略算法和动态特征队列，我们的算法在处理大量非平稳数据和多种攻击类型时取得了显著的性能提升。实验结果表明，我们的算法不仅能够在各种计算机视觉任务中取得与传统方法相媲美甚至超越的性能，而且在模型的稳定性和泛化能力方面也表现出色，为深度神经网络在复杂环境下的应用提供了一种有效的解决方案。
+                            </p>
+                        </div>
+                    </div>
+                    <p class="wow fadeInUp" data-wow-delay=".5s" style="color: black;"><br>
+                        &#12288;&#12288;渐进训练与动态特征队列相结合，构成了一种有效的深度神经网络训练策略。渐进训练策略解决了深度网络在大量非平稳数据上训练时的挑战，保留了挖掘以前学习过类别的能力。动态特征队列通过负样本更新，将传统二分类任务转变为多分类任务，减少参数设置，提高模型性能和准确度。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Nginx + uWSGI + Flask + MySQL架构-->
+    <section class="job-category style2 section">
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2 class="wow fadeInUp" data-wow-delay=".4s">Nginx + uWSGI + Flask + MySQL架构</h2>
+                        <p class="wow fadeInUp" data-wow-delay=".6s">
+                            利用Nginx作为反向代理服务器，uWSGI连接Flask与Nginx，Flask处理应用逻辑，MySQL用于数据存储。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cat-head">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a class="wow fadeInUp" data-wow-delay=".8s" style="text-align: center;">
+                            <div class="icon" style="text-align: center;">
+                                <img class="logo1" src="../static/assets/images/instruction/nginx.png" alt="Logo"
+                                    style="width: 100%;" />
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6"><br><br>
+                        <p class="wow fadeInUp" data-wow-delay=".5s" style="color: black;">
+                            &#12288;&#12288;Nginx是一个高性能的HTTP和反向代理服务器，用于接收用户的HTTP请求并将其转发到uWSGI服务器处理。此外，Nginx还负责处理静态文件请求，如图片、样式表和JavaScript文件，以提高整体性能和并发处理能力。
+                        </p>
+                    </div>
+                </div><br><br>
+                <div class="row">
+                    <div class="col-md-6"><br><br>
+                        <p class="wow fadeInUp" data-wow-delay=".5s" style="color: black;">
+                            &#12288;&#12288;uWSGI是一个Web服务器网关接口，用于连接Nginx和Flask应用程序。它负责将来自Nginx的HTTP请求传递给Flask应用程序，并将动态内容的响应返回给Nginx。uWSGI还可以管理Flask应用程序的多个实例，以提高性能和可靠性。
+                        </p>
+                    </div>
+                    <div class="col-md-6" style="text-align: center;">
+                        <a class="wow fadeInUp" data-wow-delay=".8s" style="text-align: center;">
+                            <div class="icon" style="text-align: center;">
+                                <img class="logo1" src="../static/assets/images/instruction/wsgi.png" alt="Logo"
+                                    style="width: 100%;" /><br><br>
+                            </div>
+                        </a>
+                    </div>
+                </div><br>
+                <p class="wow fadeInUp" data-wow-delay=".5s" style="color: black;"><br>
+                    &#12288;&#12288;Flask是一个轻量级的Python
+                    Web框架，用于构建Web应用程序。在此架构中，Flask负责处理应用程序的业务逻辑，包括路由、视图函数和模板渲染。Flask还与MySQL数据库进行交互，从中检索和存储数据，以满足用户的请求。
+                </p><br>
+                <a class=" wow fadeInUp" data-wow-delay=".8s" style="text-align: center;">
+                    <div class="icon" style="text-align: center;">
+                        <img class="logo1" src="../static/assets/images/instruction/uWSGI-image2alllll.png" alt="Logo"
+                            style="height: 100%; width: 100%;" />
+                    </div><br><br>
+                </a><br>
+                <p class="wow fadeInUp" data-wow-delay=".5s" style="color: black;"><br>
+                    &#12288;&#12288;MySQL：MySQL是一个流行的关系型数据库管理系统，用于存储和管理应用程序的数据。在这个架构中，Flask应用程序通过MySQL数据库进行数据交互，包括读取和写入操作，以实现应用程序的功能需求。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!--页尾联系我们-->
+    <section class="job-category section" id="contact us">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2 data-wow-delay=".4s">联系我们</h2>
+                        <p class="wow fadeInUp" data-wow-delay=".6s">如果您有任何问题或建议，请联系我们。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <!-- Start Middle Top -->
+            <div class="footer-middle">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Single Widget -->
+                            <div class="f-about single-footer">
+
+                                <h5>通过以下方式联系我们：</h5><br>
+                                <li><span><i>Address:&#12288;</i></span> 江苏省 南京市 南京工业大学</li>
+                                <li><span><i>Email:&#12288;</i></span> xheng040601@outlook.com</li>
+                                <li><span><i>Call:&#12288;</i></span> 198-5005-0583</li><br><br>
+                                <div class="logo">
+                                    <img class="logo1" src="../static/assets/images/logo/logo.png" alt="Logo" />
+                                </div>
+                                <div class="footer-social">
+                                </div>
+                            </div>
+                            <!-- End Single Widget -->
+                        </div>
+                        <div class="col-lg-8 col-12">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <!-- Single Widget -->
+                                    <div class="single-footer f-link">
+                                        <h5>For 个人用户</h5><br>
+                                        <li><a><i>人脸识别登录</i></a></li>
+                                        <li><a><i>家居人脸门禁</i></a></li>
+                                        <li><a><i>人脸在线支付</i></a></li>
+                                        <li><a><i>人脸查房</i></a></li>
+                                    </div>
+                                    <!-- End Single Widget -->
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <!-- Single Widget -->
+                                    <div class="single-footer f-link">
+                                        <h5>For 团队公司</h5><br>
+                                        <li><a><i>团队会议人脸的真实性</i></a></li>
+                                        <li><a><i>人脸识别技术研发</i></a></li>
+                                        <li><a><i>公司人脸考勤</i></a></li>
+                                        <li><a><i>人脸识别解决方案</i></a></li>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <div class="single-footer newsletter">
+                                        <h5>订阅我们的产品</h5><br>
+                                        <p style="color: darkgrey;"><i>提交您的邮箱，随时获得我们的最新产品的消息</i></p>
+                                        <form action="mail/mail.php" method="get" target="_blank"
+                                            class="newsletter-inner">
+                                            <input name="EMAIL" placeholder="邮箱地址" class="common-input"
+                                                onfocus="this.placeholder = ''" onblur="this.placeholder = '邮箱地址'"
+                                                required="" type="email">
+                                            <div class="button">
+                                                <button class="btn">订阅 <span class="dir-part"></span></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <a href="#" class="scroll-top btn-hover">
+        <i class="lni lni-chevron-up"></i>
+    </a>
+    <script src="../static/assets/js/bootstrap.min.js"></script>
+    <script src="../static/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/assets/js/wow.min.js"></script>
+    <script src="../static/assets/js/tiny-slider.js"></script>
+    <script src="../static/assets/js/glightbox.min.js"></script>
+    <script src="../static/assets/js/main.js"></script>
+    <script type="text/javascript">
+        tns({
+            container: '.client-logo-carousel',
+            slideBy: 'page',
+            autoplay: true,
+            autoplayButtonOutput: false,
+            mouseDrag: true,
+            gutter: 15,
+            nav: false,
+            controls: false,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 2,
+                },
+                768: {
+                    items: 3,
+                },
+                992: {
+                    items: 4,
+                },
+                1170: {
+                    items: 6,
+                }
+            }
+        });
+        tns({
+            container: '.testimonial-slider',
+            items: 1,
+            slideBy: 'page',
+            autoplay: false,
+            mouseDrag: true,
+            gutter: 0,
+            nav: false,
+            controls: true,
+            controlsText: ['<i class="lni lni-arrow-left"></i>', '<i class="lni lni-arrow-right"></i>'],
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                540: {
+                    items: 1,
+                },
+                768: {
+                    items: 1,
+                },
+                992: {
+                    items: 1,
+                },
+                1170: {
+                    items: 1,
+                }
+            }
+        });
+        GLightbox({
+            'href': '#',
+            'type': 'video',
+            'source': 'youtube',
+            'width': 900,
+            'autoplayVideos': true,
+        });
+    </script>
+    <script>
+        document.getElementById('register-btn').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('login-btn').classList.remove('active');
+            document.getElementById('register-btn').classList.add('active');
+            document.getElementById('pills-year').classList.remove('show', 'active');
+            document.getElementById('pills-month').classList.add('show', 'active');
+        });
+
+        document.getElementById('login-btn').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('register-btn').classList.remove('active');
+            document.getElementById('login-btn').classList.add('active');
+            document.getElementById('pills-month').classList.remove('show', 'active');
+            document.getElementById('pills-year').classList.add('show', 'active');
+        });
+    </script>
+    <script>
+        //上传script
+        // 获取 <a> 标签和 <input> 元素
+        var uploadLink = document.getElementById('uploadLink');
+        var fileInput = document.getElementById('fileInput');
+
+        // 当 <a> 标签被点击时触发
+        uploadLink.addEventListener('click', function (event) {
+            // 阻止默认行为（不跳转到链接的 href 地址）
+            event.preventDefault();
+            // 触发隐藏的 <input type="file"> 元素的点击事件
+            fileInput.click();
+        });
+
+        // 当文件选择框的文件被改变时触发
+        fileInput.addEventListener('change', function () {
+            // 可以在这里添加上传文件的逻辑
+            console.log("选择的文件：" + fileInput.files[0].name);
+        });
+    </script>
+</body>
+
+</html>
